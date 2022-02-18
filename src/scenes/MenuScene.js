@@ -117,6 +117,7 @@ export class MenuScene extends Phaser.Scene {
 
       let widthScale = window.innerWidth / widthStart;
       let heightScale = window.innerHeight / heightStart;
+      let bgWScale = window.innerHeight / initBgWidth;
 
 
     
@@ -126,20 +127,26 @@ export class MenuScene extends Phaser.Scene {
       hoverSprite.setX(window.innerWidth / 2);
       hoverSprite.setY(window.innerHeight / 2);
       playButton.setX(window.innerWidth / 2);
-      // hoverSprite.scale.resize(window.innerWidth, window.innerHeight)
       hoverSprite.setScale(scaleFactor * heightScale)
-      // background.setScale(scale * Math.max(widthScale, heightScale))
 
-      console.log('bg', background.width)
-      console.log('sc', window.innerWidth)
+      console.log('heightScale', heightScale)
+      console.log('widthScale', heightScale)
+      console.log('scale', scale)
+      // background.setScale(scale * widthScale)
+
+
+      console.log('bgWScale', bgWScale)
+      console.log('heightScale', heightScale)
+      console.log('widthScale', widthScale)
 
 
       if (widthStart > heightStart) {
         console.log('no!!!!!!!!!!!!!!!!!!!')
         background.setScale(scale * heightScale)
-      } else  if (window.innerWidth > initBgWidth){
+      } else {
         console.log('YYYYYYYYYYYYYYY!!!!!!!!!!!!!!!!!!!')
         // background.setScale(scale * widthScale)
+        // background.setScale(scale / widthScale)
       }
 
       

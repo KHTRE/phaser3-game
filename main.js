@@ -51,8 +51,12 @@ window.addEventListener('resize', function(event) {
 
   // console.log(game.scale.displayScale)
   // console.log(game.scale.canvasBounds)
+
+
   // game.scale.resize(window.innerWidth, window.innerHeight)
-  game.scale.setGameSize(window.innerWidth, window.innerHeight)
+
+  game.scale.setGameSize(window.innerWidth, window.innerHeight)   // WORKS
+
 
 
   // console.log('window', window.innerWidth, window.innerHeight)

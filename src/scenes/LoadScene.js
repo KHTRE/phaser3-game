@@ -9,9 +9,11 @@ export class LoadScene extends Phaser.Scene {
 
   init() {
 
+
   }
 
   preload() {
+    
 
     this.load.image('start_button', './src/img/buttons/start.jpg')
 
@@ -47,6 +49,7 @@ export class LoadScene extends Phaser.Scene {
 
 
   create() {
+    
 
     let startButton = this.add.image(100, 100, 'start_button');
 

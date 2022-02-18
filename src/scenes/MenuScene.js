@@ -13,6 +13,9 @@ export class MenuScene extends Phaser.Scene {
   }
 
   create() {
+
+    this.scale.startFullscreen()
+    
     
     let screenScale;
     let widthScale;

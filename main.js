@@ -28,16 +28,25 @@ const game = new Phaser.Game({
   //   width: window.innerWidth,
   //   height: window.innerHeight
   // },
+
 });
 
+
 console.log('scale', game.scale)
-console.log('canvas', game.canvas)
+console.log('scale', game.scale.isFullscreen)
+
+
 // console.log(game.canvas.width)
 // game.canvas.width = 600
 
 // game.config.width = 500;
 
 // console.log(game.config.width)
+
+
+
+
+// game.scale.startFullscreen()
 
 
 window.addEventListener('resize', function(event) {
@@ -56,8 +65,7 @@ window.addEventListener('resize', function(event) {
   // game.scale.resize(window.innerWidth, window.innerHeight)
 
   game.scale.setGameSize(window.innerWidth, window.innerHeight)   // WORKS
-
-
+  
 
   // console.log('window', window.innerWidth, window.innerHeight)
   // console.log('canvas', game.canvas.width, game.canvas.height)

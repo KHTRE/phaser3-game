@@ -109,6 +109,7 @@ export class MenuScene extends Phaser.Scene {
     console.log('back', background)
     const widthStart = window.innerWidth;
     const heightStart = window.innerHeight;
+    const initBgWidth = background.width;
 
     console.log('girl', hoverSprite)
 
@@ -129,9 +130,19 @@ export class MenuScene extends Phaser.Scene {
       hoverSprite.setScale(scaleFactor * heightScale)
       // background.setScale(scale * Math.max(widthScale, heightScale))
 
+      console.log('bg', background.width)
+      console.log('sc', window.innerWidth)
+
+
       if (widthStart > heightStart) {
-        background.setScale(scale * Math.max(widthScale, heightScale))
+        console.log('no!!!!!!!!!!!!!!!!!!!')
+        background.setScale(scale * heightScale)
+      } else  if (window.innerWidth > initBgWidth){
+        console.log('YYYYYYYYYYYYYYY!!!!!!!!!!!!!!!!!!!')
+        // background.setScale(scale * widthScale)
       }
+
+      
 
 
     }, true);

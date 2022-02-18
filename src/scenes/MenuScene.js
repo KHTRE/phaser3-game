@@ -139,16 +139,26 @@ export class MenuScene extends Phaser.Scene {
       console.log('heightScale', heightScale)
       console.log('widthScale', widthScale)
 
+      
+      // if (widthStart > heightStart) {
+      //   console.log('no!!!!!!!!!!!!!!!!!!!')
+      //   background.setScale(scale * heightScale)
+      // } else {
+      //   console.log('YYYYYYYYYYYYYYY!!!!!!!!!!!!!!!!!!!')
+      //   // background.setScale(scale * widthScale)
+      //   background.setScale(scale * heightScale)
+      // }
 
-      if (widthStart > heightStart) {
-        console.log('no!!!!!!!!!!!!!!!!!!!')
-        background.setScale(scale * heightScale)
-      } else {
-        console.log('YYYYYYYYYYYYYYY!!!!!!!!!!!!!!!!!!!')
-        // background.setScale(scale * widthScale)
-        // background.setScale(scale / widthScale)
-      }
+      background.setScale(scale * heightScale)
 
+      // if (widthStart > heightStart) {
+      //   console.log('no!!!!!!!!!!!!!!!!!!!')
+      //   background.setScale(scale * heightScale)
+      // } else {
+      //   console.log('YYYYYYYYYYYYYYY!!!!!!!!!!!!!!!!!!!')
+      //   // background.setScale(scale * widthScale)
+      //   background.setScale(scale * heightScale)
+      // }
       
 
 

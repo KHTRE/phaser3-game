@@ -32,11 +32,6 @@ export class LoadScene extends Phaser.Scene {
       }
     });
 
-    //slow the loading
-    // for (let i = 0; i < 100; i++) {
-    //   this.load.image('logo' + i, '/src/assets/1.jpg');
-    // }
-
     this.load.on('progress', (percent) => {
       loadingBar.fillRect(0, this.game.renderer.height / 2, this.game.renderer.width * percent, 50);
     })

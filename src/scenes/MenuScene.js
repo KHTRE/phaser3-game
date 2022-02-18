@@ -13,6 +13,10 @@ export class MenuScene extends Phaser.Scene {
   }
 
   create() {
+    
+    let screenScale;
+    let widthScale;
+    let heightScale;
 
     const scaleFactor = window.innerHeight / 869; 
     console.log(scaleFactor)
@@ -24,9 +28,6 @@ export class MenuScene extends Phaser.Scene {
     let scaleY = this.cameras.main.height / background.height
     let scale = Math.max(scaleX, scaleY)
     background.setScale(scale).setScrollFactor(0)
-
-
-
 
     let playButton = this.add.image(this.game.renderer.width / 2, this.game.renderer.height * 0.4, 'play_button').setDepth(1);
 
@@ -104,5 +105,35 @@ export class MenuScene extends Phaser.Scene {
     //   console.log('play clicked')
     //   this.scene.launch(CST.SCENES.LOAD);
     // });
+
+    console.log('back', background)
+    const widthStart = window.innerWidth;
+    const heightStart = window.innerHeight;
+
+    console.log('girl', hoverSprite)
+
+    window.addEventListener('resize', function(event) {
+
+      let widthScale = window.innerWidth / widthStart;
+      let heightScale = window.innerHeight / heightStart;
+
+
+    
+ 
+      background.setX(window.innerWidth / 2);
+      background.setY(window.innerHeight / 2);
+      hoverSprite.setX(window.innerWidth / 2);
+      hoverSprite.setY(window.innerHeight / 2);
+      playButton.setX(window.innerWidth / 2);
+      // hoverSprite.scale.resize(window.innerWidth, window.innerHeight)
+      hoverSprite.setScale(scaleFactor * heightScale)
+      // background.setScale(scale * Math.max(widthScale, heightScale))
+
+      if (widthStart > heightStart) {
+        background.setScale(scale * Math.max(widthScale, heightScale))
+      }
+
+
+    }, true);
   }
 }

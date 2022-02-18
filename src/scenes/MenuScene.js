@@ -48,10 +48,10 @@ export class MenuScene extends Phaser.Scene {
 
 
     // SOUND
-    // this.sound.pauseOnBlur = false;
-    // this.sound.play('music', {
-    //   loop: true
-    // })
+    this.sound.pauseOnBlur = false;
+    this.sound.play('music', {
+      loop: true
+    })
 
 
     playButton.setInteractive();

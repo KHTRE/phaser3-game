@@ -28,7 +28,9 @@ export class MenuScene extends Phaser.Scene {
     let scaleY = this.cameras.main.height / background.height
     let scale = Math.max(scaleX, scaleY)
     background.setScale(scale).setScrollFactor(0)
-
+    
+    // BASE SCALE
+    const baseScale = scale
 
     // BUTTONS
     let playButton = this.add.image(this.game.renderer.width / 2, this.game.renderer.height * 0.4, 'play_button').setDepth(1);
@@ -60,7 +62,7 @@ export class MenuScene extends Phaser.Scene {
     const soundButtonContainer = this.add.container(window.innerWidth * 0.1, window.innerHeight * 0.9);
     soundButtonContainer.add(soundOn);
     soundButtonContainer.add(soundOff);
-    soundButtonContainer.setScale(0.1, 0.1);
+    soundButtonContainer.setScale(0.1 * baseScale, 0.1 * baseScale);
     soundOn.setInteractive();
     soundOff.setInteractive();
 

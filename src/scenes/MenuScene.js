@@ -20,7 +20,7 @@ export class MenuScene extends Phaser.Scene {
     };
     
     
-    const scaleFactor = window.innerHeight / 869; // character hight
+    const characterScaleFactor = window.innerHeight / 869; // character hight
 
     // adaptive BACKGROUND
     let background = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, 'title_bg')
@@ -28,9 +28,10 @@ export class MenuScene extends Phaser.Scene {
     let scaleY = this.cameras.main.height / background.height
     let scale = Math.max(scaleX, scaleY)
     background.setScale(scale).setScrollFactor(0)
-    
-    // BASE SCALE
-    const baseScale = scale
+
+    const baseScale = Math.max(window.innerHeight / 1000, window.innerWidth / 1000) 
+    console.log(background)
+  
 
     // BUTTONS
     let playButton = this.add.image(this.game.renderer.width / 2, this.game.renderer.height * 0.4, 'play_button').setDepth(1);
@@ -39,21 +40,21 @@ export class MenuScene extends Phaser.Scene {
 
     // SPRITE
     let girlTalkSprite = this.add.sprite(this.game.renderer.width / 2, this.game.renderer.height / 2, 'girl-sprite');
-    girlTalkSprite.setScale(scaleFactor);
+    girlTalkSprite.setScale(characterScaleFactor);
     girlTalkSprite.setVisible(false)
 
     
 
     // TEXT CONTAINER
-    let box = this.add.rectangle(0, 0, 148, 50, 0x6666ff);
-    box.setStrokeStyle(4, 0xefc53f);
-    let text = this.add.text(0, 0, "Some text 123 but \nit will go for sure", {font: "16px Arial", fill: "#ffffff"});
-    text.setOrigin(0.5);
+    // let box = this.add.rectangle(0, 0, 148, 50, 0x6666ff);
+    // box.setStrokeStyle(4, 0xefc53f);
+    // let text = this.add.text(0, 0, "Some text 123 but \nit will go for sure", {font: "16px Arial", fill: "#ffffff"});
+    // text.setOrigin(0.5);
 
-    const textContainer = this.add.container(400, 300);
-    textContainer.add(box);
-    textContainer.add(text);   
-    textContainer.setScale(2)
+    // const textContainer = this.add.container(400, 300);
+    // textContainer.add(box);
+    // textContainer.add(text);   
+    // textContainer.setScale(1.5 * characterScaleFactor)
 
 
     // Sound button container
@@ -62,7 +63,7 @@ export class MenuScene extends Phaser.Scene {
     const soundButtonContainer = this.add.container(window.innerWidth * 0.1, window.innerHeight * 0.9);
     soundButtonContainer.add(soundOn);
     soundButtonContainer.add(soundOff);
-    soundButtonContainer.setScale(0.1 * baseScale, 0.1 * baseScale);
+    soundButtonContainer.setScale(0.1 * characterScaleFactor);
     soundOn.setInteractive();
     soundOff.setInteractive();
 
@@ -173,7 +174,7 @@ export class MenuScene extends Phaser.Scene {
       girlTalkSprite.setVisible(true);
       girlTalkSprite.play('talk');
 
-      text.setText('123'); //change text
+      // text.setText('123'); //change text
 
     });
 
@@ -192,20 +193,18 @@ export class MenuScene extends Phaser.Scene {
     const widthStart = window.innerWidth;
     const heightStart = window.innerHeight;
 
-    const setAdaptiveScale = (element) => {
+       const setAdaptiveScale = (element) => {
       if (!state.initScale.hasOwnProperty(element.type)) {
         state.initScale[element.type] = element.scale
       }      
 
       const initScale = state.initScale[element.type]
-      console.log('init Scale =', initScale)
       const heightScale = window.innerHeight / heightStart;
       element.setScale(initScale * heightScale);
     }
 
     const setAdaptivePosition = (element) => {
       if (!state.initPosition.hasOwnProperty(element.type)) {
-        console.log(element.x, element.y)
         state.initPosition[element.type] = [element.x, element.y]
       }  
 
@@ -225,7 +224,7 @@ export class MenuScene extends Phaser.Scene {
       // girlTalkSprite.setY(window.innerHeight / 2);
       playButton.setX(window.innerWidth / 2);
 
-      // girlTalkSprite.setScale(scaleFactor * heightScale);
+      // girlTalkSprite.setScale(characterScaleFactor * heightScale);
       // soundButtonContainer.setScale(soundButtonContainer.scale * heightScale);
 
 

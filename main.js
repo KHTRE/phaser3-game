@@ -1,5 +1,6 @@
 import { Load } from './src/scenes/Load.js';
 import { Intro } from './src/scenes/Intro.js';
+import { FirstScreen } from './src/scenes/FirstScreen.js';
 
 const gameState = {
 };
@@ -11,6 +12,7 @@ const game = new Phaser.Game({
   scene: [
     Load,
     Intro,
+    FirstScreen,
     // MenuScene
   ],
   // render: {

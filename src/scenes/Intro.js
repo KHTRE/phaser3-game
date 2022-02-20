@@ -23,6 +23,7 @@ export class Intro extends Phaser.Scene {
       widthStart: window.innerWidth,
       heightStart: window.innerHeight,
       actions: {},
+      timers: [],
     };
 
     // make things ADAPTIVE
@@ -169,6 +170,15 @@ export class Intro extends Phaser.Scene {
         }, 16);
       } 
     }
+
+    // will keep track of TIMERS
+    function customTimer(callback, time) {
+      const timer = setTimeout(()=>{
+        callback();
+        state.timers.pop();
+      }, time);
+      state.timers.push(timer);
+    }
   
     // here we start to ADD things to the scene
 
@@ -260,22 +270,24 @@ export class Intro extends Phaser.Scene {
     const charTwoToCenter = manTalkSprite.x - window.innerWidth / 2
     moveElementBy(manTalkSprite, - charTwoToCenter, 0, 1);
 
-    setTimeout(() => {
+    customTimer(() => {
       manMessage.setAlpha(1)
     }, 1000);
-    setTimeout(() => {
+    customTimer(() => {
       manMessage.setAlpha(0)
     }, 3000);
-    setTimeout(() => {
+    customTimer(() => {
       girlMessage.setAlpha(1)
     }, 5000);
-    setTimeout(() => {
+    customTimer(() => {
       girlMessage.setAlpha(0)
     }, 7000);
 
+
+    
     manTalkSprite.play({
       key: 'man-talk',
-      repeat: 5,
+      repeat: 4,
       delay: 1000
     });
     moveElementBy(manTalkSprite, 0.1, 0, 2);
@@ -284,66 +296,16 @@ export class Intro extends Phaser.Scene {
     moveElementBy(girlTalkSprite, charOneToCenter, 0, 1);
     girlTalkSprite.play({
       key: 'girl-talk',
-      repeat: 5,
+      repeat: 4,
       delay: 5000
     });
     moveElementBy(girlTalkSprite, 0.1, 0, 2);
-    moveElementBy(girlTalkSprite, 0, 50, 1);
+    moveElementBy(girlTalkSprite, 0, 100, 1);
 
     fadeElementTo(background, 1, 1);
 
 
-
-
-
-    // BUTTONS
-    // const playButton = this.add.image(this.game.renderer.width / 2, this.game.renderer.height * 0.4, 'play_button').setDepth(1);
-    // const optionsButton = this.add.image(this.game.renderer.width / 2, this.game.renderer.height * 0.6, 'options_button').setDepth(1);
-
-    
-
-    //TEXT CONTAINER
-    // let box = this.add.rectangle(0, 0, 148, 50, 0x6666ff);
-    // box.setStrokeStyle(4, 0xefc53f);
-    // let text = this.add.text(0, 0, "Some text 123 but \nit will go for sure", {font: "16px Arial", fill: "#ffffff"});
-    // text.setOrigin(0.5);
-
-    // const textContainer = this.add.container(0, 0);
-    // textContainer.add(girlTalkSprite);
-    // textContainer.add(text);   
-    // textContainer.setScale(1.5 * characterScaleFactor)
-
-    //OVERLAY
-    // setTimeout(() => {
-    // const overlay = this.add.renderTexture(0, 0, 600, 600);
-    // overlay.fill(0x000000, 0.7);
-    // }, 1000);
-
-    // //FADE OUT on space
-    // this.input.keyboard.once('keydown-SPACE', () => {
-    //   this.cameras.main.fadeOut(1000, 0, 0, 0)
-
-    //   setTimeout(() => {
-    //     this.cameras.main.fadeIn(1000, 0, 0, 0)
-    //   }, 2000)
-    // })
-
-    
-    // playButton.setInteractive();
-
-    // playButton.on('pointerover', () => {
-    //   girlTalkSprite.setVisible(true);
-    //   girlTalkSprite.play('talk');
-    // });
-
-    // playButton.on('pointerout', () => {
-
-    // });
-
-    // playButton.on('pointerup', () => {
-
-    // });
-
+    // giving names to element
     manTalkSprite.name = 'manTalkSprite'; 
     girlTalkSprite.name = 'girlTalkSprite'; 
     background.name = 'background';
@@ -351,7 +313,7 @@ export class Intro extends Phaser.Scene {
     girlMessage.name = 'manMessage';
     soundButtonContainer.name = 'soundButtonContainer';
     
-
+    
   }
 
   update() {

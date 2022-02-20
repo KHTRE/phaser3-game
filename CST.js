@@ -3,5 +3,6 @@ export const CST = {
     LOAD: 'LOAD',
     // MENU: 'MENU',
     INTRO: 'INTRO',
+    FIRST_SCREEN: 'FIRST_SCREEN',
   }
 };

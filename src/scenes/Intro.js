@@ -49,6 +49,7 @@ export class Intro extends Phaser.Scene {
  
     // adaptive on SCREEN TURN
     const resizeListener = window.addEventListener('resize', function() {
+      // IN ORDER TO WORK MUST GIVE NAMES TO ELEMENTS !!!!!!!!!!!!!
       // setAdaptiveScale(soundButtonContainer);
       setAdaptiveScale(girlTalkSprite);
       setAdaptiveScale(manTalkSprite);
@@ -60,119 +61,37 @@ export class Intro extends Phaser.Scene {
       setAdaptivePosition(background)
     }, true);
 
-    // // SCALE element (live)
-    // function scaleElementBy(element, scaleBy, seconds = 1) {
-    //   const scaleElement = () => {
-    //     state.actions[element.type] = true;
-
-    //     const iterations = seconds * 1000 / 16;
-    //     const startScale = element.scale;
-    //     const endScale = element.scale * scaleBy;
-    //     let currentScale = startScale
-    //     const step = (endScale - startScale) / iterations;
-
-    //     const scale = setInterval(() => {
-    //       currentScale += step;
-    //       element.setScale(currentScale); 
-
-    //       const scaleDone = Math.abs(element.scale - endScale) <= Math.abs(step);
-
-    //       if (scaleDone) {
-    //         element.setScale(endScale);
-    //         clearInterval(scale);
-    //         state.actions[element.type] = false;
-    //       }
-    //     }, 16);
-    //   };
-
-    //   if (!state.actions.hasOwnProperty(element.type) || state.actions[element.type] === false) {
-    //     scaleElement();
-    //   } else {
-    //     const wait = setInterval(() => {
-    //       if (state.actions[element.type] === false) {
-    //         scaleElement();
-    //         clearInterval(wait);
-    //       }
-    //     }, 16);
-    //   } 
-    // }
-
-    //  // FADE element (live)
-    //  function fadeElementTo(element, fadeTo, seconds = 1) {
-    //   const fadeElement = () => {
-    //     state.actions[element.type] = true;
-
-    //     const iterations = seconds * 1000 / 16;
-    //     const startFade = element.alpha;
-    //     const endFade = fadeTo;
-    //     let currentFade = startFade;
-    //     const step = (endFade - startFade) / iterations;
-
-    //     const fade = setInterval(() => {
-    //       currentFade += step;
-    //       element.setAlpha(currentFade); 
-
-    //       const fadeDone = Math.abs(element.alpha - endFade) <= Math.abs(step);
-
-    //       if (fadeDone) {
-    //         element.setAlpha(endFade);
-    //         clearInterval(fade);
-    //         state.actions[element.type] = false;
-    //       }
-    //     }, 16);
-    //   };
-
-    //   if (!state.actions.hasOwnProperty(element.type) || state.actions[element.type] === false) {
-    //     fadeElement();
-    //   } else {
-    //     const wait = setInterval(() => {
-    //       if (state.actions[element.type] === false) {
-    //         fadeElement();
-    //         clearInterval(wait);
-    //       }
-    //     }, 16);
-    //   } 
-    // }
-
-    // // will keep track of TIMERS
-    // function customTimer(callback, time) {
-    //   const timer = setTimeout(()=>{
-    //     callback();
-    //     state.timers.pop();
-    //   }, time);
-    //   state.timers.push(timer);
-    // }
-  
+    
     // here we start to ADD things to the scene
 
-    // // SOUND
-    // this.sound.pauseOnBlur = false;  // will not stop in other window
-    // let music = this.sound.add('music', {
-    //   loop: true
-    // });
-    // music.play();
+    // SOUND
+    this.sound.pauseOnBlur = false;  // will not stop in other window
+    let music = this.sound.add('music', {
+      loop: true
+    });
+    music.play();
 
-    // // Sound button container
-    // const soundOn = this.add.image(0, 0, 'sound_on_button');
-    // const soundOff = this.add.image(0, 0, 'sound_off_button').setAlpha(0);
-    // const soundButtonContainer = this.add.container(window.innerWidth * 0.1, window.innerHeight * 0.9).setDepth(3);
-    // soundButtonContainer.add(soundOn);
-    // soundButtonContainer.add(soundOff);
-    // const soundButtonScaleFactor = window.innerHeight / soundOn.height;
-    // soundButtonContainer.setScale(0.1 * soundButtonScaleFactor);
-    // soundOn.setInteractive();
-    // soundOff.setInteractive();
+    // Sound button container
+    const soundOn = this.add.image(0, 0, 'sound_on_button');
+    const soundOff = this.add.image(0, 0, 'sound_off_button').setAlpha(0);
+    const soundButtonContainer = this.add.container(window.innerWidth * 0.1, window.innerHeight * 0.9).setDepth(3);
+    soundButtonContainer.add(soundOn);
+    soundButtonContainer.add(soundOff);
+    const soundButtonScaleFactor = window.innerHeight / soundOn.height;
+    soundButtonContainer.setScale(0.1 * soundButtonScaleFactor);
+    soundOn.setInteractive();
+    soundOff.setInteractive();
 
-    // soundOn.on('pointerup', () => {
-    //   music.pause();
-    //   soundOff.setAlpha(100);
-    //   soundOn.setAlpha(0);
-    // });
-    // soundOff.on('pointerup', () => {
-    //   music.resume();
-    //   soundOff.setAlpha(0);
-    //   soundOn.setAlpha(100);
-    // });
+    soundOn.on('pointerup', () => {
+      music.pause();
+      soundOff.setAlpha(100);
+      soundOn.setAlpha(0);
+    });
+    soundOff.on('pointerup', () => {
+      music.resume();
+      soundOff.setAlpha(0);
+      soundOn.setAlpha(100);
+    });
       
     // adaptive BACKGROUND
     const background = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, 'title_bg').setAlpha(0);
@@ -268,13 +187,13 @@ export class Intro extends Phaser.Scene {
     // fadeElementTo(background, 1, 1);
 
 
-    // giving names to element
-    // manTalkSprite.name = 'manTalkSprite'; 
-    // girlTalkSprite.name = 'girlTalkSprite'; 
-    // background.name = 'background';
+    // giving names to element NEED for adaptiveness
+    manTalkSprite.name = 'manTalkSprite'; 
+    girlTalkSprite.name = 'girlTalkSprite'; 
+    background.name = 'background';
     // manMessage.name = 'manMessage';
     // girlMessage.name = 'manMessage';
-    // soundButtonContainer.name = 'soundButtonContainer';
+    soundButtonContainer.name = 'soundButtonContainer';
     
     // setTimeout(()=> {
     //   this.scene.start(CST.SCENES.FIRST_SCREEN);
@@ -330,6 +249,27 @@ export class Intro extends Phaser.Scene {
     }
 
 
+    function fadeElementTo(element, fadeTo, seconds) {
+      return new Promise((res) => {
+        let iterations = Math.ceil(seconds * 1000 / 16);
+        const fadeStep = (fadeTo - element.alpha) / iterations;
+        let currentFade = element.alpha
+
+        const interval = setInterval(()=>{
+          currentFade += fadeStep;
+          element.setAlpha(currentFade)
+          iterations--;
+
+          if(iterations === 0) {
+            element.setAlpha(fadeTo);
+            clearInterval(interval);
+            res('fadeElementTo finished');
+          }
+        }, 16);
+      }) 
+    }
+
+
 
     const moover2 = async() => {
       scaleElementBy(girlTalkSprite, 1.5, 3);
@@ -339,6 +279,9 @@ export class Intro extends Phaser.Scene {
     }
 
     const moover3 = async() => {
+      await fadeElementTo(background, 0.6, 2);
+      await fadeElementTo(manTalkSprite, 0, 2);
+      await fadeElementTo(manTalkSprite, 1, 2);
       await moveElementBy(manTalkSprite, -300, 0, 2);
       await moveElementBy(manTalkSprite, 0, 0, 2);
       await moveElementBy(manTalkSprite, 300, 0, 2);

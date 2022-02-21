@@ -50,22 +50,26 @@ export class Intro extends Phaser.Scene {
     // adaptive on SCREEN TURN
     const resizeListener = window.addEventListener('resize', function() {
       // IN ORDER TO WORK MUST GIVE NAMES TO ELEMENTS !!!!!!!!!!!!!
-      // setAdaptiveScale(soundButtonContainer);
+      setAdaptiveScale(soundButtonContainer);
       setAdaptiveScale(girlTalkSprite);
       setAdaptiveScale(manTalkSprite);
       setAdaptiveScale(background);
+      setAdaptiveScale(girlMessage);
+      setAdaptiveScale(manMessage);
 
-      // setAdaptivePosition(soundButtonContainer)
+      setAdaptivePosition(soundButtonContainer)
       setAdaptivePosition(girlTalkSprite)
       setAdaptivePosition(manTalkSprite)
       setAdaptivePosition(background)
+      setAdaptivePosition(girlMessage)
+      setAdaptivePosition(manMessage)
     }, true);
 
     
     // here we start to ADD things to the scene
 
     // SOUND
-    this.sound.pauseOnBlur = false;  // will not stop in other window
+    // this.sound.pauseOnBlur = false;  // will not stop in other window
     let music = this.sound.add('music', {
       loop: true
     });
@@ -101,26 +105,27 @@ export class Intro extends Phaser.Scene {
     background.setScale(backgroundScale);
 
     // character SPRITE
-    const girlTalkSprite = this.add.sprite(window.innerWidth / 2 - 200, window.innerHeight / 2, 'girl-sprite');
+    const girlTalkSprite = this.add.sprite(window.innerWidth / 2, window.innerHeight / 2, 'girl-sprite');
+    const manTalkSprite = this.add.sprite(window.innerWidth / 2, window.innerHeight / 2 + 10, 'man-sprite');
 
     const characterScaleFactor = window.innerHeight / girlTalkSprite.height;
     girlTalkSprite.setScale(characterScaleFactor);
-
-    const manTalkSprite = this.add.sprite(window.innerWidth / 2 + 200, window.innerHeight / 2, 'man-sprite');
+    girlTalkSprite.setAlpha(0);    
     manTalkSprite.setScale(characterScaleFactor);
+    manTalkSprite.setAlpha(0);
 
-    // // MESSAGE
-    // // girl
-    // const girlMessage = this.add.image(window.innerWidth / 2, window.innerHeight / 2, 'girl-message');
-    // const girlMessageScaleFactor = window.innerHeight / soundOn.height;
-    // girlMessage.setScale(0.7 * girlMessageScaleFactor);
-    // girlMessage.setAlpha(0);
 
-    // // man
-    // const manMessage = this.add.image(window.innerWidth / 2, window.innerHeight / 2, 'man-message');
-    // const manMessageScaleFactor = window.innerHeight / soundOn.height;
-    // manMessage.setScale(0.7 * manMessageScaleFactor);
-    // manMessage.setAlpha(0);
+    // MESSAGE
+    // girl
+    const girlMessage = this.add.image(window.innerWidth / 2, window.innerHeight / 2, 'girl-message');
+    const girlMessageScaleFactor = window.innerHeight / girlMessage.height;
+    girlMessage.setScale(0.15 * girlMessageScaleFactor);
+    girlMessage.setAlpha(0);
+    // man
+    const manMessage = this.add.image(window.innerWidth / 2, window.innerHeight / 2, 'man-message');
+    const manMessageScaleFactor = window.innerHeight / manMessage.height;
+    manMessage.setScale(0.15 * manMessageScaleFactor);
+    manMessage.setAlpha(0);
 
      // create ANIMATION
     this.anims.create({
@@ -141,67 +146,29 @@ export class Intro extends Phaser.Scene {
       }),
     });
 
-    // // custom ANIMATIONS (character actions)
-    // girlTalkSprite.x = - girlTalkSprite.width;
-    // manTalkSprite.x = window.innerWidth + manTalkSprite.width;
-
-    // fadeElementTo(background, 0.5, 1);
-    // fadeElementTo(background, 0.51, 6);
-
-    // const charOneToCenter = manTalkSprite.x - window.innerWidth / 2
-    // const charTwoToCenter = manTalkSprite.x - window.innerWidth / 2
-    // moveElementBy(manTalkSprite, - charTwoToCenter, 0, 1);
-
-    // customTimer(() => {
-    //   manMessage.setAlpha(1)
-    // }, 1000);
-    // customTimer(() => {
-    //   manMessage.setAlpha(0)
-    // }, 3000);
-    // customTimer(() => {
-    //   girlMessage.setAlpha(1)
-    // }, 5000);
-    // customTimer(() => {
-    //   girlMessage.setAlpha(0)
-    // }, 7000);
-
-
     
-    // manTalkSprite.play({
-    //   key: 'man-talk',
-    //   repeat: 4,
-    //   delay: 1000
-    // });
-    // moveElementBy(manTalkSprite, 0.1, 0, 2);
-    // moveElementBy(manTalkSprite, charTwoToCenter, 0, 1);
-
-    // moveElementBy(girlTalkSprite, charOneToCenter, 0, 1);
     // girlTalkSprite.play({
     //   key: 'girl-talk',
     //   repeat: 4,
     //   delay: 5000
     // });
-    // moveElementBy(girlTalkSprite, 0.1, 0, 2);
-    // moveElementBy(girlTalkSprite, 0, 100, 1);
-
-    // fadeElementTo(background, 1, 1);
 
 
-    // giving names to element NEED for adaptiveness
+    // giving NAMES to element NEED for adaptiveness
     manTalkSprite.name = 'manTalkSprite'; 
     girlTalkSprite.name = 'girlTalkSprite'; 
     background.name = 'background';
-    // manMessage.name = 'manMessage';
-    // girlMessage.name = 'manMessage';
+    manMessage.name = 'manMessage';
+    girlMessage.name = 'manMessage';
     soundButtonContainer.name = 'soundButtonContainer';
-    
-    // setTimeout(()=> {
-    //   this.scene.start(CST.SCENES.FIRST_SCREEN);
-    // }, 8000)
 
 
 
-    girlTalkSprite.x = 100
+    // CONTAINERS
+    // const girlContainer = this.add.container(window.innerWidth * 0.1, window.innerHeight * 0.9).setDepth(3);
+    // girlContainer.add(girlMessage)
+    // girlContainer.add(girlTalkSprite)
+    // girlContainer.y = girlTalkSprite.y / 12
 
 
     function moveElementBy(element, moveX, moveY, seconds) {
@@ -222,6 +189,28 @@ export class Intro extends Phaser.Scene {
             element.y = yEnd;
             clearInterval(interval);
             res('moveElementBy finished');
+          }
+        }, 16);
+      }) 
+    }
+
+    function moveElementTo(element, moveToX, moveToY, seconds) {
+      return new Promise((res) => {
+        let iterations = Math.ceil(seconds * 1000 / 16);
+        const xStep = (moveToX - element.x) / iterations;
+        const yStep = (moveToY - element.y) / iterations;
+
+
+        const interval = setInterval(()=>{
+          element.x += xStep;
+          element.y += yStep;
+          iterations--;
+
+          if(iterations === 0) {
+            element.x = moveToX;
+            element.y = moveToY;
+            clearInterval(interval);
+            res('moveElementTo finished');
           }
         }, 16);
       }) 
@@ -271,47 +260,43 @@ export class Intro extends Phaser.Scene {
 
 
 
+    // ANIMATION STARTS HERE
+
+    girlTalkSprite.x = - (girlTalkSprite.width / 2) * characterScaleFactor;
+    
     const moover2 = async() => {
-      scaleElementBy(girlTalkSprite, 1.5, 3);
-      scaleElementBy(manTalkSprite, 1.5, 3);
-      moveElementBy(manTalkSprite, 0, 150, 3);
-      await moveElementBy(girlTalkSprite, 0, 150, 3);
+      // scaleElementBy(girlTalkSprite, 1.5, 3);
+      // scaleElementBy(manTalkSprite, 1.5, 3);
+      // moveElementBy(manTalkSprite, 0, 150, 3);
+      // await moveElementBy(girlTalkSprite, 0, 150, 3);
     }
 
     const moover3 = async() => {
-      await fadeElementTo(background, 0.6, 2);
-      await fadeElementTo(manTalkSprite, 0, 2);
+      fadeElementTo(background, 0.6, 2);
       await fadeElementTo(manTalkSprite, 1, 2);
-      await moveElementBy(manTalkSprite, -300, 0, 2);
-      await moveElementBy(manTalkSprite, 0, 0, 2);
-      await moveElementBy(manTalkSprite, 300, 0, 2);
+      manTalkSprite.play({
+        key: 'man-talk',
+        repeat: 4,
+      });
+      await fadeElementTo(manMessage, 1, 0.5);
+      await fadeElementTo(manMessage, 1, 2);
+      await fadeElementTo(manMessage, 0, 0.5);
+      await moveElementBy(manTalkSprite, window.innerWidth, 0, 1);
+      fadeElementTo(manTalkSprite, 0, 2);
+      await moveElementBy(manTalkSprite, window.innerWidth, 0, 1);
+      girlTalkSprite.setAlpha(1);
+      await moveElementTo(girlTalkSprite, window.innerWidth / 2, girlTalkSprite.y, 0.5);
+      girlTalkSprite.play({
+        key: 'girl-talk',
+        repeat: 4,
+      });
+      await fadeElementTo(girlTalkSprite, 1, 0.5);
+      await fadeElementTo(girlTalkSprite, 1, 0.5);
 
-      await moveElementBy(girlTalkSprite, 300, 0, 2);
-      await moveElementBy(girlTalkSprite, 0, 0, 1);
-
-      await moover2();
+      
     }
 
     moover3();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   }
 

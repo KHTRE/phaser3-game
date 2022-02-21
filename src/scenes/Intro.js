@@ -271,6 +271,8 @@ export class Intro extends Phaser.Scene {
       // await moveElementBy(girlTalkSprite, 0, 150, 3);
     }
 
+
+
     const moover3 = async() => {
       fadeElementTo(background, 0.6, 2);
       await fadeElementTo(manTalkSprite, 1, 2);
@@ -290,10 +292,9 @@ export class Intro extends Phaser.Scene {
         key: 'girl-talk',
         repeat: 4,
       });
-      await fadeElementTo(girlTalkSprite, 1, 0.5);
-      await fadeElementTo(girlTalkSprite, 1, 0.5);
-
-      
+      await fadeElementTo(girlMessage, 1, 0.5);
+      await fadeElementTo(girlMessage, 1, 0.5);
+          
     }
 
     moover3();

@@ -9,12 +9,12 @@ export class FirstScreen extends Phaser.Scene {
   }
 
   init() {
-    console.log('started')
-    console.log(this)
+
   }
 
   create() {
 
+   
   }
 
   update() {

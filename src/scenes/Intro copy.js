@@ -190,8 +190,8 @@ export class Intro extends Phaser.Scene {
     music.play();
 
     // Sound button container
-    const soundOn = this.add.image(0, 0, 'sound_on_button');
-    const soundOff = this.add.image(0, 0, 'sound_off_button').setAlpha(0);
+    const soundOn = this.add.image(0, 0, 'sound-on-button');
+    const soundOff = this.add.image(0, 0, 'sound-off-button').setAlpha(0);
     const soundButtonContainer = this.add.container(window.innerWidth * 0.1, window.innerHeight * 0.9).setDepth(3);
     soundButtonContainer.add(soundOn);
     soundButtonContainer.add(soundOff);
@@ -212,7 +212,7 @@ export class Intro extends Phaser.Scene {
     });
       
     // adaptive BACKGROUND
-    const background = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, 'title_bg').setAlpha(0);
+    const background = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, 'title-bg').setAlpha(0);
     const scaleX = this.cameras.main.width / background.width;
     const scaleY = this.cameras.main.height / background.height;
     const backgroundScale = Math.max(scaleX, scaleY);

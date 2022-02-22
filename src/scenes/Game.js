@@ -6,7 +6,7 @@ import {
   fadeElementTo 
 } from '../Helpers/Actions.js';
 
-export class Intro extends Phaser.Scene {
+export class Game extends Phaser.Scene {
   sceneState = {      
     needHand: false,
     handDirection: true,
@@ -22,7 +22,7 @@ export class Intro extends Phaser.Scene {
   init() {
 
     // FULLSCREEN
-    // this.scale.startFullscreen() 
+    this.scale.startFullscreen() 
   }
 
   create() {
@@ -107,10 +107,11 @@ export class Intro extends Phaser.Scene {
 
     // SOUND
     // this.sound.pauseOnBlur = false;  // will not stop in other window
-    let music = this.sound.add('music', {
+       
+    const music = this.sound.add('music', {
       loop: true
     });
-    music.play();
+    music.play();    
 
     // Sound button container
     const soundOn = this.add.image(0, 0, 'sound-on-button');
@@ -441,7 +442,6 @@ export class Intro extends Phaser.Scene {
       manMessage.setDepth(3);
       await fadeElementTo(manMessage, 0, 2);
       await fadeElementTo(manMessage, 1, 0.5);
-
     }
 
     // giving NAMES to element - NEED for adaptiveness

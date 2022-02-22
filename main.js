@@ -1,9 +1,5 @@
 import { Load } from './src/scenes/Load.js';
-import { Intro } from './src/scenes/Intro.js';
-import { FirstScreen } from './src/scenes/FirstScreen.js';
-
-const gameState = {
-};
+import { Game } from './src/scenes/Game.js';
 
 const game = new Phaser.Game({
   type: Phaser.AUTO,
@@ -11,27 +7,12 @@ const game = new Phaser.Game({
   height: window.innerHeight,
   scene: [
     Load,
-    Intro,
-    FirstScreen,
-    // MenuScene
+    Game,
+   
   ],
-  // render: {
-  //   pixelArt: true // sharp edges
-  // }
-  // scale: {
-  //   mode: Phaser.Scale.FIT,
-  //   parent: 'phaser-example',
-  //   autoCenter: Phaser.Scale.CENTER_BOTH,
-  //   width: window.innerWidth,
-  //   height: window.innerHeight
-  // },
-
 });
 
-
-
-window.addEventListener('resize', function(event) {
-
-  game.scale.setGameSize(window.innerWidth, window.innerHeight)   // WORKS
-
+window.addEventListener('resize', function() {
+  // adaptiveness
+  game.scale.setGameSize(window.innerWidth, window.innerHeight);  
 }, true);

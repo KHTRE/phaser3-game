@@ -33,13 +33,20 @@ export class Intro extends Phaser.Scene {
       widthStart: window.innerWidth,
       heightStart: window.innerHeight,
       girlOutfit: '',
+      girlOutfitType: '',
       girlPrevOutfit: '',
       progress: 0,
-      accessories: [
+      options: [
         ['dress', 'shorts'],
-        ['-yellow-bag', '-blue-bag'],
-        ['-glasses', '-necklace'],
-        ['-beach', '-balcony'],
+        ['yellow-bag', 'blue-bag'],
+        ['glasses', 'necklace', true],
+        ['beach', 'balcony'],
+      ],
+      hint: [
+        'Choose your outfit',
+        'Choose a bag',
+        'Choose your accessories',
+        'Choose a location',
       ],
     };
 
@@ -78,7 +85,6 @@ export class Intro extends Phaser.Scene {
       setAdaptiveScale(rightChoiceIcon);
       setAdaptiveScale(progressBar);
       setAdaptiveScale(arrowRight);
-      setAdaptiveScale(arrowLeft);
       setAdaptiveScale(hand);
 
       setAdaptivePosition(soundButtonContainer);
@@ -93,7 +99,6 @@ export class Intro extends Phaser.Scene {
       setAdaptivePosition(rightChoiceIcon);
       setAdaptivePosition(progressBar);
       setAdaptivePosition(arrowRight);
-      setAdaptivePosition(arrowLeft);
       setAdaptivePosition(hand);
     }, true);
 
@@ -167,9 +172,6 @@ export class Intro extends Phaser.Scene {
     const arrowScaleFactor = window.innerHeight / arrowRight.height;
     arrowRight.setScale(0.15 * arrowScaleFactor);
     arrowRight.setAlpha(0);
-    const arrowLeft = this.add.image(window.innerWidth * 0.1, window.innerHeight / 2, 'arrow-left');
-    arrowLeft.setScale(0.15 * arrowScaleFactor);
-    arrowLeft.setAlpha(0);
 
     // HAND
     const hand = this.sceneState.hand = this.add.image(window.innerWidth * 0.5, window.innerHeight * 0.95, 'hand');
@@ -259,7 +261,7 @@ export class Intro extends Phaser.Scene {
       fadeElementTo(progressBar, 1, 0.5);
       fadeElementTo(leftChoiceIcon, 1, 0.5);
       fadeElementTo(rightChoiceIcon, 1, 0.5);
-      hintText.setText('Choose your outfit');
+      hintText.setText(state.hint[state.progress]);
       fadeElementTo(hintText, 1, 0.5);
       await moveElementBy(girlTalkSprite, 0, window.innerHeight * 0.1, 0.5);
       girlTalkSprite.setTexture('girl-shy');
@@ -290,19 +292,21 @@ export class Intro extends Phaser.Scene {
       leftChoiceIcon.on('pointerup', () => {
         state.girlOutfit = 'girl-in-dress';
         state.girlPrevOutfit = 'girl-in-dress';
+        state.girlOutfitType = 'dress';
         this.sceneState.needHand = false;
         clearTimeout(handTimer);
         fadeElementTo(hand, 0, 0.5);
-        makeChoice();        
+        updateOutfit();        
       });
 
       rightChoiceIcon.on('pointerup', () => {
         state.girlOutfit = 'girl-in-shorts';
         state.girlPrevOutfit = 'girl-in-shorts';
+        state.girlOutfitType = 'shorts';
         this.sceneState.needHand = false;
         clearTimeout(handTimer);
         fadeElementTo(hand, 0, 0.5);
-        makeChoice();        
+        updateOutfit();        
       });
 
       arrowRight.on('pointerover', () => {
@@ -322,18 +326,36 @@ export class Intro extends Phaser.Scene {
 
     // call the main function
     mainScenario();
-    
-    async function makeChoice() { 
+
+    const updateOutfit = async () => { 
+      this.sceneState.needHand = false;
+      fadeElementTo(hand, 0, 0.5);
       await fadeElementTo(girlTalkSprite, 0.6, 0.2);
       girlTalkSprite.setTexture(state.girlOutfit);
       fadeElementTo(arrowRight, 1, 0.5);
-      arrowRight.setInteractive();
+      arrowRight.setInteractive();      
       await fadeElementTo(girlTalkSprite, 1, 0.2);
     }
 
+    const updateBackground = async(texture) => { 
+      this.sceneState.needHand = false;
+      fadeElementTo(hand, 0, 0.5);
+      await fadeElementTo(background, 0.6, 0.2);
+      background.setTexture(texture);
+      fadeElementTo(arrowRight, 1, 0.5);
+      arrowRight.setInteractive();
+      await fadeElementTo(background, 1, 0.2);
+    }
+
+    const updateHintText = async() => {
+      await fadeElementTo(hintText, 0, 0.5);
+      hintText.setText(state.hint[state.progress]);
+      await fadeElementTo(hintText, 1, 0.5);
+    };
+
     const confirmChoice = async () => {
       fadeElementTo(arrowRight, 0, 0.5);
-
+      updateHintText();
       const handTimer = setTimeout(() => {
         fadeElementTo(hand, 1, 0.5);
         this.sceneState.needHand = true;
@@ -343,34 +365,83 @@ export class Intro extends Phaser.Scene {
       rightChoiceIcon.off('pointerup');
 
       leftChoiceIcon.on('pointerup', () => {
-        state.girlOutfit = state.girlPrevOutfit + state.accessories[state.progress][0];
-        this.sceneState.needHand = false;
-        clearTimeout(handTimer);
-        fadeElementTo(hand, 0, 0.5);
-        makeChoice();        
+        if (state.progress === state.options.length - 1) {
+          clearTimeout(handTimer);
+          updateBackground('beach-bg');
+        } else {
+          clearTimeout(handTimer);
+          state.girlOutfit = state.girlPrevOutfit + '-' + state.options[state.progress][0];
+          updateOutfit(); 
+        }               
       });
       rightChoiceIcon.on('pointerup', () => {
-        state.girlOutfit = state.girlPrevOutfit + state.accessories[state.progress][1];
-        this.sceneState.needHand = false;
-        clearTimeout(handTimer);
-        fadeElementTo(hand, 0, 0.5);
-        makeChoice(); 
+        if (state.progress === state.options.length - 1) {
+          clearTimeout(handTimer);
+          updateBackground('balcony-bg');
+        } else {
+          clearTimeout(handTimer);
+          state.girlOutfit = state.girlPrevOutfit + '-' + state.options[state.progress][1];
+          updateOutfit();
+        } 
       });
 
       progressBar.setTexture(`progress-bar-${state.progress}`)
       fadeElementTo(leftChoiceIcon, 0.6, 0.2);
       await fadeElementTo(rightChoiceIcon, 0.6, 0.2);
-      leftChoiceIcon.setTexture('yellow-bag-icon');
-      rightChoiceIcon.setTexture('blue-bag-icon');
+
+      if (state.options[state.progress].length > 2) {
+        leftChoiceIcon.setTexture(`${state.girlOutfitType}-${state.options[state.progress][0]}-icon`);
+        if (leftChoiceIcon.texture.key === '__MISSING') {
+          leftChoiceIcon.setTexture(`${state.options[state.progress][0]}-icon`);
+        }
+
+        rightChoiceIcon.setTexture(`${state.girlOutfitType}-${state.options[state.progress][1]}-icon`);
+        if (rightChoiceIcon.texture.key === '__MISSING') {
+          rightChoiceIcon.setTexture(`${state.options[state.progress][0]}-icon`);
+        }
+      } else {
+        leftChoiceIcon.setTexture(`${state.options[state.progress][0]}-icon`);
+        rightChoiceIcon.setTexture(`${state.options[state.progress][1]}-icon`);
+      }    
+
+
       fadeElementTo(leftChoiceIcon, 1, 0.2);
       await fadeElementTo(rightChoiceIcon, 1, 0.2);
 
       arrowRight.off('pointerup')
       arrowRight.on('pointerup', ()=>{
-        state.progress++
-        state.girlPrevOutfit = state.girlOutfit;
-        confirmChoice();
+        if (state.progress < state.options. length - 1) {
+          state.progress++
+          state.girlPrevOutfit = state.girlOutfit;
+          confirmChoice();
+        } else {         
+          gameEnd();
+        }
       });
+    }
+
+    const gameEnd = async() => {
+      this.cameras.main.fadeIn(2000, 0, 0, 0)
+
+      girlTalkSprite.setDepth(2);
+      manTalkSprite.setDepth(1);
+      manTalkSprite.setAlpha(1);
+      progressBar.setAlpha(0)
+      hintMessage.setAlpha(0)
+      hintText.setAlpha(0)
+      leftChoiceIcon.setAlpha(0)
+      rightChoiceIcon.setAlpha(0)
+      arrowRight.setAlpha(0)
+      const actualCharWidth = girlTalkSprite.width * characterScaleFactor;
+      girlTalkSprite.x = window.innerWidth / 2 - actualCharWidth / 4 
+      girlTalkSprite.y -= window.innerHeight * 0.1
+      manTalkSprite.x = window.innerWidth / 2 + actualCharWidth / 4;
+
+      manMessage.setTexture('man-finish-message');
+      manMessage.setDepth(3);
+      await fadeElementTo(manMessage, 0, 2);
+      await fadeElementTo(manMessage, 1, 0.5);
+
     }
 
     // giving NAMES to element - NEED for adaptiveness
@@ -386,7 +457,6 @@ export class Intro extends Phaser.Scene {
     rightChoiceIcon.name = 'rightChoiceIcon';
     progressBar.name = 'progressBar';
     arrowRight.name = 'arrowRight';
-    arrowLeft.name = 'arrowLeft';
     hand.name = 'hand';
   }
 

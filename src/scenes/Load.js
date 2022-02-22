@@ -17,13 +17,19 @@ export class Load extends Phaser.Scene {
     this.load.image('sound-off-button', './src/img/buttons/sound-off.png');
 
     this.load.image('title-bg', './src/img/locations/apartment1.jpg');
+    this.load.image('beach-bg', './src/img/locations/beach1.jpg');
+    this.load.image('balcony-bg', './src/img/locations/balcony1.jpg');
+
     this.load.image('girl-message', './src/img/message/girl.png');
     this.load.image('man-message', './src/img/message/man.png');
+    this.load.image('man-finish-message', './src/img/message/man-finish1.png');
+
     this.load.image('progress-bar-0', './src/img/helpers/progress-0.png');
     this.load.image('progress-bar-1', './src/img/helpers/progress-1.png');
     this.load.image('progress-bar-2', './src/img/helpers/progress-2.png');
     this.load.image('progress-bar-3', './src/img/helpers/progress-3.png');
     this.load.image('progress-bar-4', './src/img/helpers/progress-4.png');
+    
     this.load.image('hint-message', './src/img/helpers/hint-message.png');
     this.load.image('hand', './src/img/helpers/hand.png');
     this.load.image('arrow-right', './src/img/buttons/arrow-right-2.png');
@@ -32,17 +38,36 @@ export class Load extends Phaser.Scene {
     this.load.image('girl-shy', './src/img/girl/face-speach/shy2.png');
 
     this.load.image('girl-in-dress', './src/img/girl/in-dress/girl-in-dress.png');
-    this.load.image('girl-in-dress-yellow-bag', './src/img/girl/in-dress/ellow-bag/girl-in-dress-yello-bag.png');
+
+    this.load.image('girl-in-dress-yellow-bag', './src/img/girl/in-dress/yellow-bag/girl-in-dress-yellow-bag.png');
+    this.load.image('girl-in-dress-yellow-bag-glasses', './src/img/girl/in-dress/yellow-bag/glasses/glasses.png');
+    this.load.image('girl-in-dress-yellow-bag-necklace', './src/img/girl/in-dress/yellow-bag/necklace/necklace.png');
+
     this.load.image('girl-in-dress-blue-bag', './src/img/girl/in-dress/blue-bag/girl-in-dress-blue-bag.png');
+    this.load.image('girl-in-dress-blue-bag-glasses', './src/img/girl/in-dress/blue-bag/glasses/glasses.png');
+    this.load.image('girl-in-dress-blue-bag-necklace', './src/img/girl/in-dress/blue-bag/necklace/necklace.png');
+
 
     this.load.image('girl-in-shorts', './src/img/girl/in-shorts/girl-in-shorts.png');
-    this.load.image('girl-in-shorts-yellow-bag', './src/img/girl/in-shorts/ellow-bag/girl-in-shorts-yellow-bag.png');
+
+    this.load.image('girl-in-shorts-yellow-bag', './src/img/girl/in-shorts/yellow-bag/girl-in-shorts-yellow-bag.png');
+    this.load.image('girl-in-shorts-yellow-bag-glasses', './src/img/girl/in-shorts/yellow-bag/glasses/glasses.png');
+    this.load.image('girl-in-shorts-yellow-bag-necklace', './src/img/girl/in-shorts/yellow-bag/necklace/necklace.png');
+
     this.load.image('girl-in-shorts-blue-bag', './src/img/girl/in-shorts/blue-bag/girl-in-shorts-blue-bag.png');
+    this.load.image('girl-in-shorts-blue-bag-glasses', './src/img/girl/in-shorts/blue-bag/glasses/glasses.png');
+    this.load.image('girl-in-shorts-blue-bag-necklace', './src/img/girl/in-shorts/blue-bag/necklace/necklace.png');
 
     this.load.image('dress-icon', './src/img/options/accessories/clothes/dress1.png');
     this.load.image('shorts-icon', './src/img/options/accessories/clothes/shorts.png');
     this.load.image('yellow-bag-icon', './src/img/options/accessories/bags/yellow.png');
     this.load.image('blue-bag-icon', './src/img/options/accessories/bags/blue.png');
+    this.load.image('glasses-icon', './src/img/options/accessories/glasses/glasses.png');
+    this.load.image('shorts-necklace-icon', './src/img/options/accessories/necklace/shorts-necklace.png');
+    this.load.image('dress-necklace-icon', './src/img/options/accessories/necklace/dress-necklace.png');
+
+    this.load.image('beach-icon', './src/img/options/locations/beach.png');
+    this.load.image('balcony-icon', './src/img/options/locations/balcony.png');
 
 
     this.load.spritesheet('girl-sprite', './src/img/girl/face-speach/both-new.png', {

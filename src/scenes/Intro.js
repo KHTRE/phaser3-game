@@ -1,7 +1,17 @@
 import { CST } from '../../CST.js';
+import { 
+  moveElementBy, 
+  moveElementTo, 
+  scaleElementBy, 
+  fadeElementTo 
+} from '../Helpers/Actions.js';
 
 export class Intro extends Phaser.Scene {
-  gameState = {};
+  sceneState = {      
+    needHand: false,
+    handDirection: true,
+    update: true,
+  };
 
   constructor() {
     super({
@@ -34,16 +44,17 @@ export class Intro extends Phaser.Scene {
     };
 
     // make things ADAPTIVE
+   
     function setAdaptiveScale(element) {
       if (!state.initScale.hasOwnProperty(element.name)) {
         state.initScale[element.name] = element.scale
       }      
-
+    
       const initScale = state.initScale[element.name]
       const heightScale = window.innerHeight / state.heightStart;
       element.setScale(initScale * heightScale);
     }
-
+    
     function setAdaptivePosition(element) {
       if (!state.initPosition.hasOwnProperty(element.name)) {
         state.initPosition[element.name] = [element.x, element.y]
@@ -53,10 +64,8 @@ export class Intro extends Phaser.Scene {
       element.x = state.initPosition[element.name][0] * widthScale
       element.y = state.initPosition[element.name][1] * heightScale
     }
- 
     // adaptive on SCREEN TURN (resize)
     const resizeListener = window.addEventListener('resize', function() {
-      // IN ORDER TO WORK MUST GIVE NAMES TO ELEMENTS !!!!!!!!!!!!!
       setAdaptiveScale(soundButtonContainer);
       setAdaptiveScale(girlTalkSprite);
       setAdaptiveScale(manTalkSprite);
@@ -70,6 +79,7 @@ export class Intro extends Phaser.Scene {
       setAdaptiveScale(progressBar);
       setAdaptiveScale(arrowRight);
       setAdaptiveScale(arrowLeft);
+      setAdaptiveScale(hand);
 
       setAdaptivePosition(soundButtonContainer);
       setAdaptivePosition(girlTalkSprite);
@@ -84,6 +94,7 @@ export class Intro extends Phaser.Scene {
       setAdaptivePosition(progressBar);
       setAdaptivePosition(arrowRight);
       setAdaptivePosition(arrowLeft);
+      setAdaptivePosition(hand);
     }, true);
 
     
@@ -126,10 +137,11 @@ export class Intro extends Phaser.Scene {
     background.setScale(backgroundScale);
 
     // character SPRITE
-    let girlTalkSprite = this.add.sprite(window.innerWidth / 2, window.innerHeight / 2, 'girl-sprite');
+    const girlTalkSprite = this.add.sprite(window.innerWidth / 2, window.innerHeight / 2, 'girl-sprite');    
     const manTalkSprite = this.add.sprite(window.innerWidth / 2, window.innerHeight / 2 + 10, 'man-sprite');
 
     const characterScaleFactor = window.innerHeight / girlTalkSprite.height;
+    girlTalkSprite.x = - (girlTalkSprite.width / 2) * characterScaleFactor;
     girlTalkSprite.setScale(characterScaleFactor);
     girlTalkSprite.setAlpha(0);    
     manTalkSprite.setScale(characterScaleFactor);
@@ -152,12 +164,19 @@ export class Intro extends Phaser.Scene {
 
     // ARROWS
     const arrowRight = this.add.image(window.innerWidth * 0.9, window.innerHeight / 2, 'arrow-right');
-    const arrowScaleFactor = window.innerHeight / progressBar.height;
-    arrowRight.setScale(0.005 * arrowScaleFactor);
+    const arrowScaleFactor = window.innerHeight / arrowRight.height;
+    arrowRight.setScale(0.15 * arrowScaleFactor);
     arrowRight.setAlpha(0);
     const arrowLeft = this.add.image(window.innerWidth * 0.1, window.innerHeight / 2, 'arrow-left');
-    arrowLeft.setScale(0.005 * arrowScaleFactor);
+    arrowLeft.setScale(0.15 * arrowScaleFactor);
     arrowLeft.setAlpha(0);
+
+    // HAND
+    const hand = this.sceneState.hand = this.add.image(window.innerWidth * 0.5, window.innerHeight * 0.95, 'hand');
+    const handScaleFactor = window.innerHeight / this.sceneState.hand.height;
+    this.sceneState.hand.setScale(0.25 * handScaleFactor);
+    hand.setAlpha(0);
+
 
     // MESSAGES
     // girl
@@ -176,7 +195,7 @@ export class Intro extends Phaser.Scene {
     hintMessage.setScale(0.05 * hintMessageScaleFactor, 0.1 * hintMessageScaleFactor);
     hintMessage.setAlpha(0);
 
-    let hintText = this.add.text(hintMessage.x, hintMessage.y, 'Some hint here one', {
+    const hintText = this.add.text(hintMessage.x, hintMessage.y, 'Some hint here one', {
       align: 'center',
       wordWrap: {
         width: 150,
@@ -207,112 +226,14 @@ export class Intro extends Phaser.Scene {
       }),
     });
 
+
     
-
-    function moveElementBy(element, moveX, moveY, seconds) {
-      return new Promise((res) => {
-        let iterations = Math.ceil(seconds * 1000 / 16);
-        const xStep = moveX / iterations;
-        const xEnd = element.x + moveX;
-        const yStep = moveY / iterations;
-        const yEnd = element.y + moveY;
-
-        const interval = setInterval(()=>{
-          element.x += xStep;
-          element.y += yStep;
-          iterations--;
-
-          if(iterations === 0) {
-            element.x = xEnd;
-            element.y = yEnd;
-            clearInterval(interval);
-            res('moveElementBy finished');
-          }
-        }, 16);
-      }) 
-    }
-
-    function moveElementTo(element, moveToX, moveToY, seconds) {
-      return new Promise((res) => {
-        let iterations = Math.ceil(seconds * 1000 / 16);
-        const xStep = (moveToX - element.x) / iterations;
-        const yStep = (moveToY - element.y) / iterations;
-
-
-        const interval = setInterval(()=>{
-          element.x += xStep;
-          element.y += yStep;
-          iterations--;
-
-          if(iterations === 0) {
-            element.x = moveToX;
-            element.y = moveToY;
-            clearInterval(interval);
-            res('moveElementTo finished');
-          }
-        }, 16);
-      }) 
-    }
-
-    function scaleElementBy(element, scaleBy, seconds) {
-      return new Promise((res) => {
-        let iterations = Math.ceil(seconds * 1000 / 16);
-        const scaleEnd = element.scale * scaleBy;
-        const scaleStep = (scaleEnd - element.scale) / iterations;
-        let currentScale = element.scale
-
-        const interval = setInterval(()=>{
-          currentScale += scaleStep;
-          element.setScale(currentScale)
-          iterations--;
-
-          if(iterations === 0) {
-            element.setScale(scaleEnd);
-            clearInterval(interval);
-            res('scaleElementBy finished');
-          }
-        }, 16);
-      }) 
-    }
-
-
-    function fadeElementTo(element, fadeTo, seconds) {
-      return new Promise((res) => {
-        let iterations = Math.ceil(seconds * 1000 / 16);
-        const fadeStep = (fadeTo - element.alpha) / iterations;
-        let currentFade = element.alpha
-
-        const interval = setInterval(()=>{
-          currentFade += fadeStep;
-          element.setAlpha(currentFade)
-          iterations--;
-
-          if(iterations === 0) {
-            element.setAlpha(fadeTo);
-            clearInterval(interval);
-            res('fadeElementTo finished');
-          }
-        }, 16);
-      }) 
-    }
-
-
-
-    // ANIMATION STARTS HERE
-
-    girlTalkSprite.x = - (girlTalkSprite.width / 2) * characterScaleFactor;
-    
-    const moover2 = async() => {
-      // scaleElementBy(girlTalkSprite, 1.5, 3);
-      // scaleElementBy(manTalkSprite, 1.5, 3);
-      // moveElementBy(manTalkSprite, 0, 150, 3);
-      // await moveElementBy(girlTalkSprite, 0, 150, 3);
-    }
-
 
 
     // The game STARS here
     const mainScenario = async() => {
+
+      // INTRO animation
       fadeElementTo(background, 0.5, 2);
       await fadeElementTo(manTalkSprite, 1, 2);
       manTalkSprite.play({
@@ -343,17 +264,24 @@ export class Intro extends Phaser.Scene {
       await moveElementBy(girlTalkSprite, 0, window.innerHeight * 0.1, 0.5);
       girlTalkSprite.setTexture('girl-shy');
 
+      // the GAME itself      
+
+      const handTimer = setTimeout(() => {
+        fadeElementTo(hand, 1, 0.5);
+        this.sceneState.needHand = true;
+      }, 2000);
+
       leftChoiceIcon.setInteractive();
       rightChoiceIcon.setInteractive();
 
       leftChoiceIcon.on('pointerover', () => {
-        fadeElementTo(leftChoiceIcon, 0.8, 0.3);
+        fadeElementTo(leftChoiceIcon, 0.7, 0.3);
       });
       leftChoiceIcon.on('pointerout', () => {
         fadeElementTo(leftChoiceIcon, 1, 0.3);
       });
       rightChoiceIcon.on('pointerover', () => {
-        fadeElementTo(rightChoiceIcon, 0.8, 0.3);
+        fadeElementTo(rightChoiceIcon, 0.7, 0.3);
       });
       rightChoiceIcon.on('pointerout', () => {
         fadeElementTo(rightChoiceIcon, 1, 0.3);
@@ -362,63 +290,74 @@ export class Intro extends Phaser.Scene {
       leftChoiceIcon.on('pointerup', () => {
         state.girlOutfit = 'girl-in-dress';
         state.girlPrevOutfit = 'girl-in-dress';
+        this.sceneState.needHand = false;
+        clearTimeout(handTimer);
+        fadeElementTo(hand, 0, 0.5);
         makeChoice();        
       });
 
       rightChoiceIcon.on('pointerup', () => {
         state.girlOutfit = 'girl-in-shorts';
         state.girlPrevOutfit = 'girl-in-shorts';
+        this.sceneState.needHand = false;
+        clearTimeout(handTimer);
+        fadeElementTo(hand, 0, 0.5);
         makeChoice();        
       });
 
       arrowRight.on('pointerover', () => {
-        fadeElementTo(arrowRight, 0.8, 0.3);
+        scaleElementBy(arrowRight, 1.25, 0.3);
       });
       arrowRight.on('pointerout', () => {
-        fadeElementTo(arrowRight, 1, 0.3);
+        scaleElementBy(arrowRight, 0.8, 0.3);
       });
 
       arrowRight.on('pointerup', ()=>{
         state.progress++
-        console.log(state.progress)
         confirmChoice();
         arrowRight.off('pointerup')
       });
 
     }
 
+    // call the main function
     mainScenario();
-
-    async function makeChoice() {  
+    
+    async function makeChoice() { 
       await fadeElementTo(girlTalkSprite, 0.6, 0.2);
       girlTalkSprite.setTexture(state.girlOutfit);
       fadeElementTo(arrowRight, 1, 0.5);
       arrowRight.setInteractive();
       await fadeElementTo(girlTalkSprite, 1, 0.2);
-      
     }
 
-    async function confirmChoice(){
+    const confirmChoice = async () => {
+      fadeElementTo(arrowRight, 0, 0.5);
+
+      const handTimer = setTimeout(() => {
+        fadeElementTo(hand, 1, 0.5);
+        this.sceneState.needHand = true;
+      }, 2000);
+
       leftChoiceIcon.off('pointerup');
       rightChoiceIcon.off('pointerup');
 
       leftChoiceIcon.on('pointerup', () => {
-        console.log('before', state.girlOutfit)
-        console.log(state.progress)
         state.girlOutfit = state.girlPrevOutfit + state.accessories[state.progress][0];
-        console.log('after', state.girlOutfit)
+        this.sceneState.needHand = false;
+        clearTimeout(handTimer);
+        fadeElementTo(hand, 0, 0.5);
         makeChoice();        
       });
       rightChoiceIcon.on('pointerup', () => {
-        console.log('before', state.girlOutfit)
-        console.log(state.progress)
         state.girlOutfit = state.girlPrevOutfit + state.accessories[state.progress][1];
-        console.log('after', state.girlOutfit)
+        this.sceneState.needHand = false;
+        clearTimeout(handTimer);
+        fadeElementTo(hand, 0, 0.5);
         makeChoice(); 
       });
 
       progressBar.setTexture(`progress-bar-${state.progress}`)
-      fadeElementTo(arrowRight, 0, 0.5);
       fadeElementTo(leftChoiceIcon, 0.6, 0.2);
       await fadeElementTo(rightChoiceIcon, 0.6, 0.2);
       leftChoiceIcon.setTexture('yellow-bag-icon');
@@ -428,19 +367,13 @@ export class Intro extends Phaser.Scene {
 
       arrowRight.off('pointerup')
       arrowRight.on('pointerup', ()=>{
-        console.log('arrowRight click')
         state.progress++
         state.girlPrevOutfit = state.girlOutfit;
-        console.log('option1_1', state.progress)
         confirmChoice();
       });
     }
 
-
-  
-   
-
-    // giving NAMES to element NEED for adaptiveness
+    // giving NAMES to element - NEED for adaptiveness
     manTalkSprite.name = 'manTalkSprite'; 
     girlTalkSprite.name = 'girlTalkSprite'; 
     background.name = 'background';
@@ -454,10 +387,30 @@ export class Intro extends Phaser.Scene {
     progressBar.name = 'progressBar';
     arrowRight.name = 'arrowRight';
     arrowLeft.name = 'arrowLeft';
-
+    hand.name = 'hand';
   }
 
   update() {
-
+    if (this.sceneState.update && this.sceneState.needHand) {
+      if (this.sceneState.handDirection) {
+        this.sceneState.hand.x += window.innerWidth / 100;
+        if (this.sceneState.hand.x > window.innerWidth * 0.7) {
+          this.sceneState.handDirection = false;
+          this.sceneState.update = false;
+          setTimeout(() => {
+            this.sceneState.update = true;
+          }, 1500);
+        }
+      } else if (!this.sceneState.handDirection) {
+        this.sceneState.hand.x -= window.innerWidth / 100;
+        if (this.sceneState.hand.x < window.innerWidth * 0.33) {
+          this.sceneState.handDirection = true;
+          this.sceneState.update = false;
+          setTimeout(() => {
+            this.sceneState.update = true;
+          }, 1500);
+        }
+      }
+    }    
   }
 }

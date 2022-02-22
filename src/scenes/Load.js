@@ -25,8 +25,9 @@ export class Load extends Phaser.Scene {
     this.load.image('progress-bar-3', './src/img/helpers/progress-3.png');
     this.load.image('progress-bar-4', './src/img/helpers/progress-4.png');
     this.load.image('hint-message', './src/img/helpers/hint-message.png');
-    this.load.image('arrow-right', './src/img/helpers/arrow-right-2.png');
-    this.load.image('arrow-left', './src/img/helpers/arrow-left-2.png');
+    this.load.image('hand', './src/img/helpers/hand.png');
+    this.load.image('arrow-right', './src/img/buttons/arrow-right-2.png');
+    this.load.image('arrow-left', './src/img/buttons/arrow-left-2.png');
 
     this.load.image('girl-shy', './src/img/girl/face-speach/shy2.png');
 

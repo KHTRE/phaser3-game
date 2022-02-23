@@ -63,23 +63,6 @@ class Game extends Phaser.Scene {
       element.y = state.initPosition[element.name][1] * heightScale;
     }
 
-    function resetAdaptiveScale(element) {
-      state.initScale[element.name] = element.scale;
-
-      const initScale = state.initScale[element.name];
-      const heightScale = window.innerHeight / state.heightStart;
-      element.setScale(initScale * heightScale);
-    }
-
-    function resetAdaptivePosition(element) {
-      state.initPosition[element.name] = [element.x, element.y];
-
-      const heightScale = window.innerHeight / state.heightStart;
-      const widthScale = window.innerWidth / state.widthStart;
-      element.x = state.initPosition[element.name][0] * widthScale;
-      element.y = state.initPosition[element.name][1] * heightScale;
-    }
-
     // here we start to ADD things to the scene
 
     // SOUND

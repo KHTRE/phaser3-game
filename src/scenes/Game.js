@@ -294,8 +294,6 @@ class Game extends Phaser.Scene {
       fadeElementTo(hintText, 1, 0.5);
       await moveElementBy(girlTalkSprite, 0, window.innerHeight * 0.1, 0.5);
       girlTalkSprite.setTexture('girl-shy');
-      resetAdaptivePosition(manTalkSprite);
-      resetAdaptivePosition(girlTalkSprite);
 
       // the GAME itself
       const updateOutfit = async () => {
@@ -341,8 +339,6 @@ class Game extends Phaser.Scene {
         girlTalkSprite.x = window.innerWidth / 2 - diff;
         girlTalkSprite.y -= window.innerHeight * 0.05;
         manTalkSprite.x = window.innerWidth / 2 + diff;
-        resetAdaptivePosition(manTalkSprite);
-        resetAdaptivePosition(girlTalkSprite);
         manMessage.setTexture('man-finish-message');
         manMessage.setDepth(3);
         await fadeElementTo(manMessage, 0, 2);

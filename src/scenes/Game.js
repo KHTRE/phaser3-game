@@ -71,6 +71,23 @@ export class Game extends Phaser.Scene {
       element.x = state.initPosition[element.name][0] * widthScale
       element.y = state.initPosition[element.name][1] * heightScale
     }
+
+    function resetAdaptiveScale(element) {
+      state.initScale[element.name] = element.scale
+
+      const initScale = state.initScale[element.name]
+      const heightScale = window.innerHeight / state.heightStart;
+      element.setScale(initScale * heightScale);
+    }
+    
+    function resetAdaptivePosition(element) {
+      state.initPosition[element.name] = [element.x, element.y]
+
+      const heightScale = window.innerHeight / state.heightStart;
+      const widthScale = window.innerWidth / state.widthStart;
+      element.x = state.initPosition[element.name][0] * widthScale
+      element.y = state.initPosition[element.name][1] * heightScale
+    }
     // adaptive on SCREEN TURN (resize)
     const resizeListener = window.addEventListener('resize', function() {
       setAdaptiveScale(soundButtonContainer);
@@ -106,7 +123,7 @@ export class Game extends Phaser.Scene {
     // here we start to ADD things to the scene
 
     // SOUND
-    // this.sound.pauseOnBlur = false;  // will not stop in other window
+    this.sound.pauseOnBlur = false;  // will not stop in other window
        
     const music = this.sound.add('music', {
       loop: true
@@ -266,6 +283,8 @@ export class Game extends Phaser.Scene {
       fadeElementTo(hintText, 1, 0.5);
       await moveElementBy(girlTalkSprite, 0, window.innerHeight * 0.1, 0.5);
       girlTalkSprite.setTexture('girl-shy');
+      resetAdaptivePosition(manTalkSprite);
+      resetAdaptivePosition(girlTalkSprite);
 
       // the GAME itself      
 
@@ -434,10 +453,12 @@ export class Game extends Phaser.Scene {
       rightChoiceIcon.setAlpha(0)
       arrowRight.setAlpha(0)
       const actualCharWidth = girlTalkSprite.width * characterScaleFactor;
-      girlTalkSprite.x = window.innerWidth / 2 - actualCharWidth / 4 
-      girlTalkSprite.y -= window.innerHeight * 0.1
-      manTalkSprite.x = window.innerWidth / 2 + actualCharWidth / 4;
-
+      let diff = actualCharWidth / 4;
+      girlTalkSprite.x = window.innerWidth / 2 - diff 
+      girlTalkSprite.y -= window.innerHeight * 0.05
+      manTalkSprite.x = window.innerWidth / 2 + diff;
+      resetAdaptivePosition(manTalkSprite);
+      resetAdaptivePosition(girlTalkSprite);
       manMessage.setTexture('man-finish-message');
       manMessage.setDepth(3);
       await fadeElementTo(manMessage, 0, 2);

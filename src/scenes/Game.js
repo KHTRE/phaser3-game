@@ -213,6 +213,14 @@ class Game extends Phaser.Scene {
       }),
     });
 
+    // EMITTER
+    const particles = this.add.particles('star');
+    const emitter = particles.createEmitter();
+    emitter.setPosition(window.innerWidth / 2, window.innerHeight / 2);
+    emitter.setSpeed(400);
+    emitter.setBlendMode(Phaser.BlendModes.ADD);
+    emitter.setAlpha(0);
+
     // giving NAMES to element - NEED for adaptiveness
     manTalkSprite.name = 'manTalkSprite';
     girlTalkSprite.name = 'girlTalkSprite';
@@ -228,6 +236,7 @@ class Game extends Phaser.Scene {
     arrowRight.name = 'arrowRight';
     hand.name = 'hand';
     playNowButton.name = 'playNowButton';
+    emitter.name = 'emitter';
 
     // adaptive on SCREEN TURN (resize)
     window.addEventListener('resize', () => {
@@ -245,6 +254,7 @@ class Game extends Phaser.Scene {
       setAdaptiveScale(arrowRight);
       setAdaptiveScale(hand);
       setAdaptiveScale(playNowButton);
+      setAdaptiveScale(emitter);
 
       setAdaptivePosition(soundContainer);
       setAdaptivePosition(girlTalkSprite);
@@ -260,6 +270,7 @@ class Game extends Phaser.Scene {
       setAdaptivePosition(arrowRight);
       setAdaptivePosition(hand);
       setAdaptivePosition(playNowButton);
+      setAdaptivePosition(emitter);
     }, true);
 
     // The game STARS here
@@ -301,11 +312,13 @@ class Game extends Phaser.Scene {
       const updateOutfit = async () => {
         this.sceneState.needHand = false;
         fadeElementTo(hand, 0, 0.5);
+        emitter.setAlpha(1);
         await fadeElementTo(girlTalkSprite, 0.6, 0.2);
         girlTalkSprite.setTexture(state.girlOutfit);
         fadeElementTo(arrowRight, 1, 0.5);
         arrowRight.setInteractive();
         await fadeElementTo(girlTalkSprite, 1, 0.2);
+        emitter.setAlpha(0);
       };
 
       const updateBackground = async (texture) => {
@@ -346,9 +359,9 @@ class Game extends Phaser.Scene {
         manMessage.setTexture('man-finish-message');
         manMessage.setDepth(3);
         await fadeElementTo(manMessage, 0, 2);
-        await fadeElementTo(manMessage, 1, 0.5);
         await fadeElementTo(manMessage, 0.9, 0.5);
-        await fadeElementTo(manMessage, 1, 1);
+        await fadeElementTo(manMessage, 1, 1.5);
+        await fadeElementTo(manMessage, 0, 0.5);
         await fadeElementTo(playNowButton, 1, 0.5);
       };
 

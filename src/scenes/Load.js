@@ -8,6 +8,8 @@ class Load extends Phaser.Scene {
   }
 
   preload() {
+    this.load.image('star', './src/assets/img/helpers/star2.png');
+
     this.load.image('start-button', './src/assets/img/buttons/start.png');
     this.load.image('sound-on-button', './src/assets/img/buttons/sound-on.png');
     this.load.image('sound-off-button', './src/assets/img/buttons/sound-off.png');

@@ -43,7 +43,7 @@ class Game extends Phaser.Scene {
       ],
     };
 
-    // make things ADAPTIVE
+    // make things ADAPTIVE on turn
     function setAdaptiveScale(element) {
       if (!state.initScale.hasOwnProperty(element.name)) {
         state.initScale[element.name] = element.scale;

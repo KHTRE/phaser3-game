@@ -1,5 +1,5 @@
-import { Load } from './src/scenes/Load.js';
-import { Game } from './src/scenes/Game.js';
+import Load from './src/scenes/Load.js';
+import Game from './src/scenes/Game.js';
 
 const game = new Phaser.Game({
   type: Phaser.AUTO,
@@ -8,7 +8,6 @@ const game = new Phaser.Game({
   scene: [
     Load,
     Game,
-   
   ],
 });
 

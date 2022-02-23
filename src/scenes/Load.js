@@ -1,20 +1,17 @@
 import { CST } from '../../CST.js';
 
-export class Load extends Phaser.Scene {
+class Load extends Phaser.Scene {
   constructor() {
     super({
-      key: CST.SCENES.LOAD
-    }) 
-  }
-
-  init() {
-
+      key: CST.SCENES.LOAD,
+    });
   }
 
   preload() {
     this.load.image('start-button', './src/assets/img/buttons/start.png');
     this.load.image('sound-on-button', './src/assets/img/buttons/sound-on.png');
     this.load.image('sound-off-button', './src/assets/img/buttons/sound-off.png');
+    this.load.image('play-now-button', './src/assets/img/buttons/play-now.png');
 
     this.load.image('title-bg', './src/assets/img/locations/apartment1.jpg');
     this.load.image('beach-bg', './src/assets/img/locations/beach1.jpg');
@@ -29,7 +26,7 @@ export class Load extends Phaser.Scene {
     this.load.image('progress-bar-2', './src/assets/img/helpers/progress-2.png');
     this.load.image('progress-bar-3', './src/assets/img/helpers/progress-3.png');
     this.load.image('progress-bar-4', './src/assets/img/helpers/progress-4.png');
-    
+
     this.load.image('hint-message', './src/assets/img/helpers/hint-message.png');
     this.load.image('hand', './src/assets/img/helpers/hand.png');
     this.load.image('arrow-right', './src/assets/img/buttons/arrow-right-2.png');
@@ -46,7 +43,6 @@ export class Load extends Phaser.Scene {
     this.load.image('girl-in-dress-blue-bag', './src/assets/img/girl/in-dress/blue-bag/girl-in-dress-blue-bag.png');
     this.load.image('girl-in-dress-blue-bag-glasses', './src/assets/img/girl/in-dress/blue-bag/glasses/glasses.png');
     this.load.image('girl-in-dress-blue-bag-necklace', './src/assets/img/girl/in-dress/blue-bag/necklace/necklace.png');
-
 
     this.load.image('girl-in-shorts', './src/assets/img/girl/in-shorts/girl-in-shorts.png');
 
@@ -69,35 +65,31 @@ export class Load extends Phaser.Scene {
     this.load.image('beach-icon', './src/assets/img/options/locations/beach.png');
     this.load.image('balcony-icon', './src/assets/img/options/locations/balcony.png');
 
-
     this.load.spritesheet('girl-sprite', './src/assets/img/girl/face-speach/both-new.png', {
       frameHeight: 869,
-      frameWidth: 372
+      frameWidth: 372,
     });
     this.load.spritesheet('man-sprite', './src/assets/img/man/face-speach/bothman.png', {
       frameHeight: 857,
-      frameWidth: 388
+      frameWidth: 388,
     });
 
     this.load.audio('music', './src/assets/audio/1.mp3');
 
-    let loadingBar = this.add.graphics({
+    const loadingBar = this.add.graphics({
       fillStyle: {
-        color: 0xffffff
-      }
+        color: 0xffffff,
+      },
     });
 
     this.load.on('progress', (percent) => {
       loadingBar.fillRect(0, this.game.renderer.height / 2, this.game.renderer.width * percent, 50);
-    })
+    });
 
     this.load.on('complete', () => {
       loadingBar.clear();
-    })
-
+    });
   }
- 
-
 
   create() {
     const startButton = this.add.image(window.innerWidth / 2, window.innerHeight / 2, 'start-button');
@@ -108,7 +100,6 @@ export class Load extends Phaser.Scene {
       this.scene.start(CST.SCENES.INTRO);
     });
   }
-
-
-
 }
+
+export default Load;

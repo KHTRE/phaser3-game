@@ -1,13 +1,13 @@
 import { CST } from '../../CST.js';
-import { 
-  moveElementBy, 
-  moveElementTo, 
-  scaleElementBy, 
-  fadeElementTo 
+import {
+  moveElementBy,
+  moveElementTo,
+  scaleElementBy,
+  fadeElementTo,
 } from '../Helpers/Actions.js';
 
-export class Game extends Phaser.Scene {
-  sceneState = {      
+class Game extends Phaser.Scene {
+  sceneState = {
     needHand: false,
     handDirection: true,
     update: true,
@@ -15,18 +15,11 @@ export class Game extends Phaser.Scene {
 
   constructor() {
     super({
-      key: CST.SCENES.INTRO
-    }) 
-  }
-
-  init() {
-
-    // FULLSCREEN
-    // this.scale.startFullscreen() 
+      key: CST.SCENES.INTRO,
+    });
   }
 
   create() {
-
     const state = {
       initScale: {},
       initPosition: {},
@@ -51,93 +44,60 @@ export class Game extends Phaser.Scene {
     };
 
     // make things ADAPTIVE
-   
     function setAdaptiveScale(element) {
       if (!state.initScale.hasOwnProperty(element.name)) {
-        state.initScale[element.name] = element.scale
-      }      
-    
-      const initScale = state.initScale[element.name]
+        state.initScale[element.name] = element.scale;
+      }
+      const initScale = state.initScale[element.name];
       const heightScale = window.innerHeight / state.heightStart;
       element.setScale(initScale * heightScale);
     }
-    
+
     function setAdaptivePosition(element) {
       if (!state.initPosition.hasOwnProperty(element.name)) {
-        state.initPosition[element.name] = [element.x, element.y]
-      }  
+        state.initPosition[element.name] = [element.x, element.y];
+      }
       const heightScale = window.innerHeight / state.heightStart;
       const widthScale = window.innerWidth / state.widthStart;
-      element.x = state.initPosition[element.name][0] * widthScale
-      element.y = state.initPosition[element.name][1] * heightScale
+      element.x = state.initPosition[element.name][0] * widthScale;
+      element.y = state.initPosition[element.name][1] * heightScale;
     }
 
     function resetAdaptiveScale(element) {
-      state.initScale[element.name] = element.scale
+      state.initScale[element.name] = element.scale;
 
-      const initScale = state.initScale[element.name]
+      const initScale = state.initScale[element.name];
       const heightScale = window.innerHeight / state.heightStart;
       element.setScale(initScale * heightScale);
     }
-    
+
     function resetAdaptivePosition(element) {
-      state.initPosition[element.name] = [element.x, element.y]
+      state.initPosition[element.name] = [element.x, element.y];
 
       const heightScale = window.innerHeight / state.heightStart;
       const widthScale = window.innerWidth / state.widthStart;
-      element.x = state.initPosition[element.name][0] * widthScale
-      element.y = state.initPosition[element.name][1] * heightScale
+      element.x = state.initPosition[element.name][0] * widthScale;
+      element.y = state.initPosition[element.name][1] * heightScale;
     }
-    // adaptive on SCREEN TURN (resize)
-    const resizeListener = window.addEventListener('resize', function() {
-      setAdaptiveScale(soundButtonContainer);
-      setAdaptiveScale(girlTalkSprite);
-      setAdaptiveScale(manTalkSprite);
-      setAdaptiveScale(background);
-      setAdaptiveScale(girlMessage);
-      setAdaptiveScale(manMessage);
-      setAdaptiveScale(hintMessage);
-      setAdaptiveScale(hintText);
-      setAdaptiveScale(leftChoiceIcon);
-      setAdaptiveScale(rightChoiceIcon);
-      setAdaptiveScale(progressBar);
-      setAdaptiveScale(arrowRight);
-      setAdaptiveScale(hand);
 
-      setAdaptivePosition(soundButtonContainer);
-      setAdaptivePosition(girlTalkSprite);
-      setAdaptivePosition(manTalkSprite);
-      setAdaptivePosition(background);
-      setAdaptivePosition(girlMessage);
-      setAdaptivePosition(manMessage);
-      setAdaptivePosition(hintMessage);
-      setAdaptivePosition(hintText);
-      setAdaptivePosition(leftChoiceIcon);
-      setAdaptivePosition(rightChoiceIcon);
-      setAdaptivePosition(progressBar);
-      setAdaptivePosition(arrowRight);
-      setAdaptivePosition(hand);
-    }, true);
-
-    
     // here we start to ADD things to the scene
 
     // SOUND
-    this.sound.pauseOnBlur = false;  // will not stop in other window
-       
+    this.sound.pauseOnBlur = false; // will not stop in other window
     const music = this.sound.add('music', {
-      loop: true
+      loop: true,
     });
-    music.play();    
+    music.play();
 
     // Sound button container
     const soundOn = this.add.image(0, 0, 'sound-on-button');
     const soundOff = this.add.image(0, 0, 'sound-off-button').setAlpha(0);
-    const soundButtonContainer = this.add.container(window.innerWidth * 0.1, window.innerHeight * 0.9).setDepth(3);
-    soundButtonContainer.add(soundOn);
-    soundButtonContainer.add(soundOff);
+    const soundContainer = this.add.container(window.innerWidth * 0.1, window.innerHeight * 0.9);
+    soundContainer.setDepth(3);
+    soundContainer.add(soundOn);
+    soundContainer.add(soundOff);
     const soundButtonScaleFactor = window.innerHeight / soundOn.height;
-    soundButtonContainer.setScale(0.1 * soundButtonScaleFactor);
+    soundContainer.setScale(0.1 * soundButtonScaleFactor);
     soundOn.setInteractive();
     soundOff.setInteractive();
 
@@ -151,7 +111,7 @@ export class Game extends Phaser.Scene {
       soundOff.setAlpha(0);
       soundOn.setAlpha(100);
     });
-      
+
     // adaptive BACKGROUND
     const background = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, 'title-bg').setAlpha(0);
     const scaleX = this.cameras.main.width / background.width;
@@ -160,13 +120,13 @@ export class Game extends Phaser.Scene {
     background.setScale(backgroundScale);
 
     // character SPRITE
-    const girlTalkSprite = this.add.sprite(window.innerWidth / 2, window.innerHeight / 2, 'girl-sprite');    
+    const girlTalkSprite = this.add.sprite(window.innerWidth / 2, window.innerHeight / 2, 'girl-sprite');
     const manTalkSprite = this.add.sprite(window.innerWidth / 2, window.innerHeight / 2 + 10, 'man-sprite');
 
     const characterScaleFactor = window.innerHeight / girlTalkSprite.height;
-    girlTalkSprite.x = - (girlTalkSprite.width / 2) * characterScaleFactor;
+    girlTalkSprite.x = -(girlTalkSprite.width / 2) * characterScaleFactor;
     girlTalkSprite.setScale(characterScaleFactor);
-    girlTalkSprite.setAlpha(0);    
+    girlTalkSprite.setAlpha(0);
     manTalkSprite.setScale(characterScaleFactor);
     manTalkSprite.setAlpha(0);
 
@@ -192,11 +152,18 @@ export class Game extends Phaser.Scene {
     arrowRight.setAlpha(0);
 
     // HAND
-    const hand = this.sceneState.hand = this.add.image(window.innerWidth * 0.5, window.innerHeight * 0.95, 'hand');
+    this.sceneState.hand = this.add.image(window.innerWidth * 0.5, window.innerHeight * 0.95, 'hand');
+    const { hand } = this.sceneState;
     const handScaleFactor = window.innerHeight / this.sceneState.hand.height;
     this.sceneState.hand.setScale(0.25 * handScaleFactor);
     hand.setAlpha(0);
 
+    // final BUTTON
+    const playNowButton = this.add.image(window.innerWidth / 2, window.innerHeight * 0.8, 'play-now-button');
+    const playNowButtonScaleFactor = window.innerHeight / playNowButton.height;
+    playNowButton.setScale(0.08 * playNowButtonScaleFactor);
+    playNowButton.setAlpha(0);
+    playNowButton.setDepth(3);
 
     // MESSAGES
     // girl
@@ -219,21 +186,21 @@ export class Game extends Phaser.Scene {
       align: 'center',
       wordWrap: {
         width: 150,
-    },
+      },
     });
     const hintTextScaleFactor = window.innerHeight / hintText.height;
     hintText.setOrigin(0.5);
     hintText.setScale(0.07 * hintTextScaleFactor);
-    hintText.setWordWrapWidth(200)
+    hintText.setWordWrapWidth(200);
     hintText.setAlpha(0);
 
-     // create ANIMATION
+    // create ANIMATION
     this.anims.create({
       key: 'girl-talk',
       frameRate: 5,
       repeat: 1,
       frames: this.anims.generateFrameNumbers('girl-sprite', {
-        frames: [1, 0]
+        frames: [1, 0],
       }),
     });
 
@@ -242,17 +209,61 @@ export class Game extends Phaser.Scene {
       frameRate: 5,
       repeat: 1,
       frames: this.anims.generateFrameNumbers('man-sprite', {
-        frames: [0, 1]
+        frames: [0, 1],
       }),
     });
 
+    // giving NAMES to element - NEED for adaptiveness
+    manTalkSprite.name = 'manTalkSprite';
+    girlTalkSprite.name = 'girlTalkSprite';
+    background.name = 'background';
+    manMessage.name = 'manMessage';
+    girlMessage.name = 'manMessage';
+    soundContainer.name = 'soundContainer';
+    hintMessage.name = 'hintMessage';
+    hintText.name = 'hintText';
+    leftChoiceIcon.name = 'leftChoiceIcon';
+    rightChoiceIcon.name = 'rightChoiceIcon';
+    progressBar.name = 'progressBar';
+    arrowRight.name = 'arrowRight';
+    hand.name = 'hand';
+    playNowButton.name = 'playNowButton';
 
-    
+    // adaptive on SCREEN TURN (resize)
+    window.addEventListener('resize', () => {
+      setAdaptiveScale(soundContainer);
+      setAdaptiveScale(girlTalkSprite);
+      setAdaptiveScale(manTalkSprite);
+      setAdaptiveScale(background);
+      setAdaptiveScale(girlMessage);
+      setAdaptiveScale(manMessage);
+      setAdaptiveScale(hintMessage);
+      setAdaptiveScale(hintText);
+      setAdaptiveScale(leftChoiceIcon);
+      setAdaptiveScale(rightChoiceIcon);
+      setAdaptiveScale(progressBar);
+      setAdaptiveScale(arrowRight);
+      setAdaptiveScale(hand);
+      setAdaptiveScale(playNowButton);
 
+      setAdaptivePosition(soundContainer);
+      setAdaptivePosition(girlTalkSprite);
+      setAdaptivePosition(manTalkSprite);
+      setAdaptivePosition(background);
+      setAdaptivePosition(girlMessage);
+      setAdaptivePosition(manMessage);
+      setAdaptivePosition(hintMessage);
+      setAdaptivePosition(hintText);
+      setAdaptivePosition(leftChoiceIcon);
+      setAdaptivePosition(rightChoiceIcon);
+      setAdaptivePosition(progressBar);
+      setAdaptivePosition(arrowRight);
+      setAdaptivePosition(hand);
+      setAdaptivePosition(playNowButton);
+    }, true);
 
     // The game STARS here
-    const mainScenario = async() => {
-
+    const mainScenario = async () => {
       // INTRO animation
       fadeElementTo(background, 0.5, 2);
       await fadeElementTo(manTalkSprite, 1, 2);
@@ -286,7 +297,126 @@ export class Game extends Phaser.Scene {
       resetAdaptivePosition(manTalkSprite);
       resetAdaptivePosition(girlTalkSprite);
 
-      // the GAME itself      
+      // the GAME itself
+      const updateOutfit = async () => {
+        this.sceneState.needHand = false;
+        fadeElementTo(hand, 0, 0.5);
+        await fadeElementTo(girlTalkSprite, 0.6, 0.2);
+        girlTalkSprite.setTexture(state.girlOutfit);
+        fadeElementTo(arrowRight, 1, 0.5);
+        arrowRight.setInteractive();
+        await fadeElementTo(girlTalkSprite, 1, 0.2);
+      };
+
+      const updateBackground = async (texture) => {
+        this.sceneState.needHand = false;
+        fadeElementTo(hand, 0, 0.5);
+        await fadeElementTo(background, 0.6, 0.2);
+        background.setTexture(texture);
+        fadeElementTo(arrowRight, 1, 0.5);
+        arrowRight.setInteractive();
+        await fadeElementTo(background, 1, 0.2);
+      };
+
+      const updateHintText = async () => {
+        await fadeElementTo(hintText, 0, 0.5);
+        hintText.setText(state.hint[state.progress]);
+        await fadeElementTo(hintText, 1, 0.5);
+      };
+
+      const gameEnd = async () => {
+        this.cameras.main.fadeIn(2000, 0, 0, 0);
+
+        girlTalkSprite.setDepth(2);
+        manTalkSprite.setDepth(1);
+        manTalkSprite.setAlpha(1);
+        progressBar.setAlpha(0);
+        hintMessage.setAlpha(0);
+        hintText.setAlpha(0);
+        leftChoiceIcon.setAlpha(0);
+        rightChoiceIcon.setAlpha(0);
+        arrowRight.setAlpha(0);
+        const actualCharWidth = girlTalkSprite.width * characterScaleFactor;
+        const diff = actualCharWidth / 4;
+        girlTalkSprite.x = window.innerWidth / 2 - diff;
+        girlTalkSprite.y -= window.innerHeight * 0.05;
+        manTalkSprite.x = window.innerWidth / 2 + diff;
+        resetAdaptivePosition(manTalkSprite);
+        resetAdaptivePosition(girlTalkSprite);
+        manMessage.setTexture('man-finish-message');
+        manMessage.setDepth(3);
+        await fadeElementTo(manMessage, 0, 2);
+        await fadeElementTo(manMessage, 1, 0.5);
+        await fadeElementTo(manMessage, 0.9, 0.5);
+        await fadeElementTo(manMessage, 1, 1);
+        await fadeElementTo(playNowButton, 1, 0.5);
+      };
+
+      const confirmChoice = async () => {
+        fadeElementTo(arrowRight, 0, 0.5);
+        updateHintText();
+        const handTimer = setTimeout(() => {
+          fadeElementTo(hand, 1, 0.5);
+          this.sceneState.needHand = true;
+        }, 2000);
+
+        leftChoiceIcon.off('pointerup');
+        rightChoiceIcon.off('pointerup');
+
+        leftChoiceIcon.on('pointerup', () => {
+          if (state.progress === state.options.length - 1) {
+            clearTimeout(handTimer);
+            updateBackground('beach-bg');
+          } else {
+            clearTimeout(handTimer);
+            state.girlOutfit = `${state.girlPrevOutfit}-${state.options[state.progress][0]}`;
+            updateOutfit();
+          }
+        });
+        rightChoiceIcon.on('pointerup', () => {
+          if (state.progress === state.options.length - 1) {
+            clearTimeout(handTimer);
+            updateBackground('balcony-bg');
+          } else {
+            clearTimeout(handTimer);
+            state.girlOutfit = `${state.girlPrevOutfit}-${state.options[state.progress][1]}`;
+            updateOutfit();
+          }
+        });
+
+        progressBar.setTexture(`progress-bar-${state.progress}`);
+        fadeElementTo(leftChoiceIcon, 0.6, 0.2);
+        await fadeElementTo(rightChoiceIcon, 0.6, 0.2);
+
+        if (state.options[state.progress].length > 2) {
+          leftChoiceIcon.setTexture(`${state.girlOutfitType}-${state.options[state.progress][0]}-icon`);
+          if (leftChoiceIcon.texture.key === '__MISSING') {
+            leftChoiceIcon.setTexture(`${state.options[state.progress][0]}-icon`);
+          }
+
+          rightChoiceIcon.setTexture(`${state.girlOutfitType}-${state.options[state.progress][1]}-icon`);
+          if (rightChoiceIcon.texture.key === '__MISSING') {
+            rightChoiceIcon.setTexture(`${state.options[state.progress][0]}-icon`);
+          }
+        } else {
+          leftChoiceIcon.setTexture(`${state.options[state.progress][0]}-icon`);
+          rightChoiceIcon.setTexture(`${state.options[state.progress][1]}-icon`);
+        }
+
+        fadeElementTo(leftChoiceIcon, 1, 0.2);
+        await fadeElementTo(rightChoiceIcon, 1, 0.2);
+
+        arrowRight.off('pointerup');
+        arrowRight.on('pointerup', () => {
+          if (state.progress < state.options.length - 1) {
+            state.progress++
+            state.girlPrevOutfit = state.girlOutfit;
+            confirmChoice();
+          } else {
+            gameEnd();
+          }
+        });
+      };
 
       const handTimer = setTimeout(() => {
         fadeElementTo(hand, 1, 0.5);
@@ -316,7 +446,7 @@ export class Game extends Phaser.Scene {
         this.sceneState.needHand = false;
         clearTimeout(handTimer);
         fadeElementTo(hand, 0, 0.5);
-        updateOutfit();        
+        updateOutfit();
       });
 
       rightChoiceIcon.on('pointerup', () => {
@@ -326,7 +456,7 @@ export class Game extends Phaser.Scene {
         this.sceneState.needHand = false;
         clearTimeout(handTimer);
         fadeElementTo(hand, 0, 0.5);
-        updateOutfit();        
+        updateOutfit();
       });
 
       arrowRight.on('pointerover', () => {
@@ -336,149 +466,15 @@ export class Game extends Phaser.Scene {
         scaleElementBy(arrowRight, 0.8, 0.3);
       });
 
-      arrowRight.on('pointerup', ()=>{
+      arrowRight.on('pointerup', () => {
         state.progress++
         confirmChoice();
-        arrowRight.off('pointerup')
+        arrowRight.off('pointerup');
       });
-
-    }
+    };
 
     // call the main function
     mainScenario();
-
-    const updateOutfit = async () => { 
-      this.sceneState.needHand = false;
-      fadeElementTo(hand, 0, 0.5);
-      await fadeElementTo(girlTalkSprite, 0.6, 0.2);
-      girlTalkSprite.setTexture(state.girlOutfit);
-      fadeElementTo(arrowRight, 1, 0.5);
-      arrowRight.setInteractive();      
-      await fadeElementTo(girlTalkSprite, 1, 0.2);
-    }
-
-    const updateBackground = async(texture) => { 
-      this.sceneState.needHand = false;
-      fadeElementTo(hand, 0, 0.5);
-      await fadeElementTo(background, 0.6, 0.2);
-      background.setTexture(texture);
-      fadeElementTo(arrowRight, 1, 0.5);
-      arrowRight.setInteractive();
-      await fadeElementTo(background, 1, 0.2);
-    }
-
-    const updateHintText = async() => {
-      await fadeElementTo(hintText, 0, 0.5);
-      hintText.setText(state.hint[state.progress]);
-      await fadeElementTo(hintText, 1, 0.5);
-    };
-
-    const confirmChoice = async () => {
-      fadeElementTo(arrowRight, 0, 0.5);
-      updateHintText();
-      const handTimer = setTimeout(() => {
-        fadeElementTo(hand, 1, 0.5);
-        this.sceneState.needHand = true;
-      }, 2000);
-
-      leftChoiceIcon.off('pointerup');
-      rightChoiceIcon.off('pointerup');
-
-      leftChoiceIcon.on('pointerup', () => {
-        if (state.progress === state.options.length - 1) {
-          clearTimeout(handTimer);
-          updateBackground('beach-bg');
-        } else {
-          clearTimeout(handTimer);
-          state.girlOutfit = state.girlPrevOutfit + '-' + state.options[state.progress][0];
-          updateOutfit(); 
-        }               
-      });
-      rightChoiceIcon.on('pointerup', () => {
-        if (state.progress === state.options.length - 1) {
-          clearTimeout(handTimer);
-          updateBackground('balcony-bg');
-        } else {
-          clearTimeout(handTimer);
-          state.girlOutfit = state.girlPrevOutfit + '-' + state.options[state.progress][1];
-          updateOutfit();
-        } 
-      });
-
-      progressBar.setTexture(`progress-bar-${state.progress}`)
-      fadeElementTo(leftChoiceIcon, 0.6, 0.2);
-      await fadeElementTo(rightChoiceIcon, 0.6, 0.2);
-
-      if (state.options[state.progress].length > 2) {
-        leftChoiceIcon.setTexture(`${state.girlOutfitType}-${state.options[state.progress][0]}-icon`);
-        if (leftChoiceIcon.texture.key === '__MISSING') {
-          leftChoiceIcon.setTexture(`${state.options[state.progress][0]}-icon`);
-        }
-
-        rightChoiceIcon.setTexture(`${state.girlOutfitType}-${state.options[state.progress][1]}-icon`);
-        if (rightChoiceIcon.texture.key === '__MISSING') {
-          rightChoiceIcon.setTexture(`${state.options[state.progress][0]}-icon`);
-        }
-      } else {
-        leftChoiceIcon.setTexture(`${state.options[state.progress][0]}-icon`);
-        rightChoiceIcon.setTexture(`${state.options[state.progress][1]}-icon`);
-      }    
-
-
-      fadeElementTo(leftChoiceIcon, 1, 0.2);
-      await fadeElementTo(rightChoiceIcon, 1, 0.2);
-
-      arrowRight.off('pointerup')
-      arrowRight.on('pointerup', ()=>{
-        if (state.progress < state.options. length - 1) {
-          state.progress++
-          state.girlPrevOutfit = state.girlOutfit;
-          confirmChoice();
-        } else {         
-          gameEnd();
-        }
-      });
-    }
-
-    const gameEnd = async() => {
-      this.cameras.main.fadeIn(2000, 0, 0, 0)
-
-      girlTalkSprite.setDepth(2);
-      manTalkSprite.setDepth(1);
-      manTalkSprite.setAlpha(1);
-      progressBar.setAlpha(0)
-      hintMessage.setAlpha(0)
-      hintText.setAlpha(0)
-      leftChoiceIcon.setAlpha(0)
-      rightChoiceIcon.setAlpha(0)
-      arrowRight.setAlpha(0)
-      const actualCharWidth = girlTalkSprite.width * characterScaleFactor;
-      let diff = actualCharWidth / 4;
-      girlTalkSprite.x = window.innerWidth / 2 - diff 
-      girlTalkSprite.y -= window.innerHeight * 0.05
-      manTalkSprite.x = window.innerWidth / 2 + diff;
-      resetAdaptivePosition(manTalkSprite);
-      resetAdaptivePosition(girlTalkSprite);
-      manMessage.setTexture('man-finish-message');
-      manMessage.setDepth(3);
-      await fadeElementTo(manMessage, 0, 2);
-      await fadeElementTo(manMessage, 1, 0.5);
-    }
-
-    // giving NAMES to element - NEED for adaptiveness
-    manTalkSprite.name = 'manTalkSprite'; 
-    girlTalkSprite.name = 'girlTalkSprite'; 
-    background.name = 'background';
-    manMessage.name = 'manMessage';
-    girlMessage.name = 'manMessage';
-    soundButtonContainer.name = 'soundButtonContainer';
-    hintMessage.name = 'hintMessage';
-    hintText.name = 'hintText';
-    leftChoiceIcon.name = 'leftChoiceIcon';
-    rightChoiceIcon.name = 'rightChoiceIcon';
-    progressBar.name = 'progressBar';
-    arrowRight.name = 'arrowRight';
-    hand.name = 'hand';
   }
 
   update() {
@@ -502,6 +498,8 @@ export class Game extends Phaser.Scene {
           }, 1500);
         }
       }
-    }    
+    }
   }
 }
+
+export default Game;

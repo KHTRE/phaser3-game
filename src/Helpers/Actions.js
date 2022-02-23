@@ -6,19 +6,19 @@ export function moveElementBy(element, moveX, moveY, seconds) {
     const yStep = moveY / iterations;
     const yEnd = element.y + moveY;
 
-    const interval = setInterval(()=>{
+    const interval = setInterval(() => {
       element.x += xStep;
       element.y += yStep;
       iterations--;
 
-      if(iterations === 0) {
+      if (iterations === 0) {
         element.x = xEnd;
         element.y = yEnd;
         clearInterval(interval);
         res('moveElementBy finished');
       }
     }, 16);
-  }) 
+  });
 }
 
 export function moveElementTo(element, moveToX, moveToY, seconds) {
@@ -27,20 +27,19 @@ export function moveElementTo(element, moveToX, moveToY, seconds) {
     const xStep = (moveToX - element.x) / iterations;
     const yStep = (moveToY - element.y) / iterations;
 
-
-    const interval = setInterval(()=>{
+    const interval = setInterval(() => {
       element.x += xStep;
       element.y += yStep;
       iterations--;
 
-      if(iterations === 0) {
+      if (iterations === 0) {
         element.x = moveToX;
         element.y = moveToY;
         clearInterval(interval);
         res('moveElementTo finished');
       }
     }, 16);
-  }) 
+  });
 }
 
 export function scaleElementBy(element, scaleBy, seconds) {

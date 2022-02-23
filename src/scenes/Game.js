@@ -22,7 +22,7 @@ export class Game extends Phaser.Scene {
   init() {
 
     // FULLSCREEN
-    this.scale.startFullscreen() 
+    // this.scale.startFullscreen() 
   }
 
   create() {

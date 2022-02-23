@@ -236,7 +236,6 @@ class Game extends Phaser.Scene {
     arrowRight.name = 'arrowRight';
     hand.name = 'hand';
     playNowButton.name = 'playNowButton';
-    emitter.name = 'emitter';
 
     // adaptive on SCREEN TURN (resize)
     window.addEventListener('resize', () => {
@@ -254,7 +253,6 @@ class Game extends Phaser.Scene {
       setAdaptiveScale(arrowRight);
       setAdaptiveScale(hand);
       setAdaptiveScale(playNowButton);
-      setAdaptiveScale(emitter);
 
       setAdaptivePosition(soundContainer);
       setAdaptivePosition(girlTalkSprite);
@@ -270,7 +268,6 @@ class Game extends Phaser.Scene {
       setAdaptivePosition(arrowRight);
       setAdaptivePosition(hand);
       setAdaptivePosition(playNowButton);
-      setAdaptivePosition(emitter);
     }, true);
 
     // The game STARS here
